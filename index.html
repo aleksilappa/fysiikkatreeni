@@ -1,0 +1,328 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Voima ja energia -alueen laskutehtävät</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: one centered column — formula toggles, two big buttons, a task card on squared notebook paper with the answer folding open beneath. */
+:root{
+  --bg:#eef2f7; --paper:#ffffff; --grid:#d6e2f0; --ink:#17243d; --muted:#5a6880;
+  --accent:#2350c8; --accent-ink:#ffffff; --easy:#1d7a55; --hard:#b4381f;
+  --mark:#ffe873; --line:#c9d5e4;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1522; --paper:#161f31; --grid:#22304a; --ink:#e6ecf7; --muted:#9aa8c0;
+  --accent:#7ea2ff; --accent-ink:#0f1522; --easy:#5fd3a2; --hard:#ff8f73;
+  --mark:#6b5a12; --line:#2c3a55; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1522; --paper:#161f31; --grid:#22304a; --ink:#e6ecf7; --muted:#9aa8c0;
+  --accent:#7ea2ff; --accent-ink:#0f1522; --easy:#5fd3a2; --hard:#ff8f73;
+  --mark:#6b5a12; --line:#2c3a55; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header{display:flex;flex-direction:column;gap:4px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,6vw,44px);line-height:1.05;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:4px 0 0;max-width:62ch}
+
+.fhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.fhead h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0}
+.fhead span{font-size:14px;color:var(--muted)}
+.formulas{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media (max-width:640px){.formulas{grid-template-columns:repeat(2,1fr)}}
+.fchip{background:var(--paper);border:1.5px solid var(--accent);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0;text-align:left;color:var(--ink);position:relative}
+.fchip span{font-size:12px;color:var(--muted);letter-spacing:.03em}
+.fchip b{font-family:var(--display);font-weight:700;font-size:17px}
+.fchip::after{content:"✓";position:absolute;top:6px;right:9px;font-size:13px;font-weight:700;color:var(--accent)}
+.fchip[aria-pressed="false"]{border-style:dashed;border-color:var(--line);opacity:.55}
+.fchip[aria-pressed="false"] b{text-decoration:line-through;text-decoration-thickness:2px}
+.fchip{padding:12px 30px 12px 12px}
+.fchip[aria-pressed="false"]::after{content:""}
+i.v{font-family:var(--body);font-style:italic}
+
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{font:inherit;cursor:pointer;border-radius:12px;transition:transform .08s ease, background .15s, opacity .15s}
+button:active{transform:translateY(1px)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.btn-task{font-family:var(--display);font-weight:700;font-size:19px;padding:16px 14px;border:2px solid currentColor;background:var(--paper);display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left}
+.btn-task small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted)}
+.btn-easy{color:var(--easy)} .btn-hard{color:var(--hard)}
+.btn-task:hover{background:color-mix(in srgb, currentColor 8%, var(--paper))}
+
+.card{background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px, transparent 1px),linear-gradient(90deg,var(--grid) 1px, transparent 1px);
+  background-size:22px 22px;background-position:-1px -1px;
+  border:1px solid var(--line);border-radius:14px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:16px}
+.meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.badge{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;border:1.5px solid currentColor;background:var(--paper)}
+.badge.easy{color:var(--easy)} .badge.hard{color:var(--hard)}
+.num{font-size:14px;color:var(--muted);background:var(--paper);padding:0 4px}
+.task{font-size:21px;line-height:1.5;margin:0;background:var(--paper);padding:2px 4px;box-decoration-break:clone;-webkit-box-decoration-break:clone;max-width:60ch}
+.task strong{background:linear-gradient(transparent 55%, var(--mark) 55%);font-weight:700;white-space:nowrap}
+.task.empty{font-size:17px;color:var(--muted)}
+
+.btn-answer{align-self:flex-start;background:var(--accent);color:var(--accent-ink);border:0;padding:12px 20px;font-weight:700;font-size:16px}
+.answer{background:var(--paper);border-top:2px dashed var(--line);padding-top:14px;display:flex;flex-direction:column;gap:12px}
+.answer .res{font-family:var(--display);font-weight:800;font-size:28px;font-variant-numeric:tabular-nums}
+.answer .res small{font-family:var(--body);font-weight:400;font-size:16px;color:var(--muted);margin-left:8px}
+.answer .lbl{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.answer ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px;font-variant-numeric:tabular-nums}
+.answer .round{font-size:15px;color:var(--muted);margin:0;max-width:62ch}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn-tool{background:var(--paper);color:var(--ink);border:1.5px solid var(--line);padding:8px 14px;font-weight:700;font-size:15px;border-radius:999px}
+.btn-tool[aria-expanded="true"]{border-color:var(--accent);color:var(--accent)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.panel h3{font-family:var(--display);font-weight:700;font-size:18px;margin:0}
+.panel p,.panel ul{margin:0;max-width:62ch}
+.panel ul{padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.ftable{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.ftable div{border:1px solid var(--line);border-radius:8px;padding:8px 12px;display:flex;flex-direction:column}
+.ftable span{font-size:12px;color:var(--muted)}
+.ftable b{font-family:var(--display);font-weight:700;font-size:19px}
+.tscroll{overflow-x:auto}
+.panel table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+.panel th,.panel td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line)}
+.panel th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){button{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Fysiikka · 8. lk · Kpl 16–20</span>
+    <h1>Voima ja energia -alueen laskutehtävät</h1>
+    <p class="lead">Arvo tehtävä, laske se vihkoon ja tarkista vastaus. Lukuarvot arvotaan joka kerta uudestaan, joten tehtäviä riittää loputtomiin.</p>
+  </header>
+
+  <div class="tools">
+    <button class="btn-tool" type="button" id="t-kaavat" aria-expanded="false" aria-controls="p-kaavat">Kaavat</button>
+    <button class="btn-tool" type="button" id="t-suureet" aria-expanded="false" aria-controls="p-suureet">Suureet ja yksiköt</button>
+    <button class="btn-tool" type="button" id="t-pyor" aria-expanded="false" aria-controls="p-pyor">Pyöristys</button>
+  </div>
+
+  <section class="panel" id="p-kaavat" hidden>
+    <h3>Kaavat</h3>
+    <div class="ftable">
+      <div><span>Massa → paino</span><b><i class="v">G</i> = <i class="v">m</i> · 10 N/kg</b></div>
+      <div><span>Työ</span><b><i class="v">W</i> = <i class="v">F</i><i class="v">s</i></b></div>
+      <div><span>Nostotyö</span><b><i class="v">W</i> = <i class="v">G</i><i class="v">h</i></b></div>
+      <div><span>Kalteva taso</span><b><i class="v">F</i><i class="v">s</i> = <i class="v">G</i><i class="v">h</i></b></div>
+      <div><span>Teho</span><b><i class="v">P</i> = <i class="v">W</i> / <i class="v">t</i></b></div>
+    </div>
+  </section>
+
+  <section class="panel" id="p-suureet" hidden>
+    <h3>Suureet ja yksiköt</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>Suure</th><th>Tunnus</th><th>Yksikkö</th></tr></thead>
+      <tbody>
+        <tr><td>massa</td><td><i class="v">m</i></td><td>kilogramma, kg</td></tr>
+        <tr><td>paino (painovoima)</td><td><i class="v">G</i></td><td>newton, N</td></tr>
+        <tr><td>voima</td><td><i class="v">F</i></td><td>newton, N</td></tr>
+        <tr><td>matka</td><td><i class="v">s</i></td><td>metri, m</td></tr>
+        <tr><td>korkeus</td><td><i class="v">h</i></td><td>metri, m</td></tr>
+        <tr><td>työ</td><td><i class="v">W</i></td><td>joule, J</td></tr>
+        <tr><td>aika</td><td><i class="v">t</i></td><td>sekunti, s</td></tr>
+        <tr><td>teho</td><td><i class="v">P</i></td><td>watti, W</td></tr>
+      </tbody>
+    </table></div>
+    <p>1 kJ = 1000 J · 1 kW = 1000 W</p>
+  </section>
+
+  <section class="panel" id="p-pyor" hidden>
+    <h3>Pyöristys</h3>
+    <ul>
+      <li>Vastauksessa on yhtä monta merkitsevää numeroa kuin epätarkimmassa lähtöarvossa.</li>
+      <li>Alkunollat ja kokonaisluvun loppunollat eivät ole merkitseviä, desimaaliluvun loppunollat ovat: 30 → 1, 1000 → 1, 0,040 → 2.</li>
+      <li>Vakio 10 N/kg ei vaikuta tarkkuuteen.</li>
+      <li>Laske välivaiheet tarkoilla arvoilla ja pyöristä vasta lopuksi.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="fh">
+    <div class="fhead"><h2 id="fh">Tehtävätyypit</h2><span id="fcount">Napauta aihetta, niin sen tehtävät jäävät pois</span></div>
+    <div class="formulas" id="formulas"></div>
+  </section>
+
+  <div class="actions">
+    <button class="btn-task btn-easy" id="btn-easy" type="button">Tee perustehtävä<small>Sijoita kaavaan ja laske</small></button>
+    <button class="btn-task btn-hard" id="btn-hard" type="button">Tee vaikea tehtävä<small>Ratkaise yhtälöstä tuntematon</small></button>
+  </div>
+
+  <article class="card" aria-live="polite">
+    <div class="meta" id="meta"><span class="badge" id="badge"></span><span class="num" id="num"></span></div>
+    <p class="task" id="task"></p>
+    <button class="btn-answer" id="btn-answer" type="button">Näytä vastaus</button>
+    <div class="answer" id="answer" hidden>
+      <div><div class="lbl">Vastaus</div><div class="res" id="res"></div></div>
+      <div><div class="lbl">Ratkaisu</div><ol id="steps"></ol></div>
+      <p class="round" id="round"></p>
+    </div>
+  </article>
+
+</div>
+
+<script>
+/* ---------- apufunktiot ---------- */
+const rand=Math.random;
+const pick=a=>a[Math.floor(rand()*a.length)];
+const V=s=>`<i class="v">${s}</i>`;
+const name=()=>pick(['Aino','Eetu','Lumi','Onni','Venla','Elias','Sofia','Leo','Helmi','Niilo']);
+const roundSig=(x,n)=>x===0?0:Number(x.toPrecision(n));
+const decs=(x,n)=>x===0?n-1:Math.max(0,n-1-Math.floor(Math.log10(Math.abs(x))));
+function fmtSig(x,n){const r=roundSig(x,n),d=decs(r,n);return r.toLocaleString('fi-FI',{minimumFractionDigits:d,maximumFractionDigits:d});}
+/* tarkka arvo välivaiheisiin (enintään 4 desimaalia) */
+const raw=x=>roundSig(x,8).toLocaleString('fi-FI',{maximumFractionDigits:4});
+const sfp=()=>pick([2,2,3]);
+/* lähtöarvo: {v, sf, t} */
+/* Merkitsevät numerot: alkunollat eivät ole merkitseviä; kokonaisluvun loppunollat eivät ole merkitseviä (30 → 1, 1000 → 1); desimaaliluvun loppunollat ovat (0,040 → 2) */
+function digits(s){let d=s.replace(/[^\d,]/g,'');if(!d.includes(','))d=d.replace(/0+$/,'');return d.replace(',','').replace(/^0+/,'').length;}
+function inp(x,sf,unit){const v=roundSig(x,sf);const s=fmtSig(v,sf);return {v,sf:Math.max(1,digits(s)),t:`${s} ${unit}`};}
+const rnd=(lo,hi,unit,sf=sfp())=>inp(lo+rand()*(hi-lo),sf,unit);
+/* työ lähtöarvona, joskus kilojouleina */
+function wIn(W){const sf=pick([2,3,3]);
+  if(W>=1000&&rand()<0.4){const k=inp(W/1000,sf,'kJ');const J=k.v*1000;return {v:J,sf:k.sf,t:k.t,J:`${raw(J)} J`,conv:`Muunna: ${k.t} = ${raw(J)} J`};}
+  const i=inp(W,sf,'J');return {...i,J:i.t,conv:null};}
+const B=x=>`<strong>${x.t}</strong>`;
+
+/* ---------- kaavat ---------- */
+const FORMULAS=[
+  {id:'G',  label:'Massa ja paino'},
+  {id:'Fs', label:'Työ'},
+  {id:'Gh', label:'Nostotyö'},
+  {id:'ramp',label:'Kalteva taso'},
+  {id:'P',  label:'Teho'},
+];
+const on=Object.fromEntries(FORMULAS.map(f=>[f.id,true]));
+
+/* Jokainen tehtävä palauttaa: text, steps (viimeinen = laskun sijoitus), x (tarkka tulos), unit, ins (lähtöarvot) */
+const EASY=[
+ {tags:['G'],f:()=>{const m=rnd(2,95,'kg');
+   return {text:`${pick(['Repun','Koiran','Polkupyörän','Kirjapinon','Vesisangon','Rattaiden'])} massa on ${B(m)}. Kuinka suuri on sen paino?`,
+   steps:[`${V('G')} = ${V('m')} · 10 N/kg`,`${V('G')} = ${m.t} · 10 N/kg`],x:m.v*10,unit:'N',ins:[m]}}},
+ {tags:['Fs'],f:()=>{const F=rnd(15,400,'N'),s=rnd(1.5,40,'m'),n=name();
+   return {text:`${n} ${pick(['työntää ostoskärryä','vetää pulkkaa','siirtää sohvaa','työntää autoa'])} voimalla ${B(F)} matkan ${B(s)}. Kuinka paljon ${n} tekee työtä?`,
+   steps:[`${V('W')} = ${V('F')}${V('s')}`,`${V('W')} = ${F.t} · ${s.t}`],x:F.v*s.v,unit:'J',ins:[F,s]}}},
+ {tags:['Gh'],f:()=>{const G=rnd(20,900,'N'),h=rnd(0.8,15,'m');
+   return {text:`${pick(['Laatikon','Matkalaukun','Kivenlohkareen','Säkin'])} paino on ${B(G)}. Se nostetaan ${B(h)} korkeudelle. Kuinka paljon työtä tehdään?`,
+   steps:[`${V('W')} = ${V('G')}${V('h')}`,`${V('W')} = ${G.t} · ${h.t}`],x:G.v*h.v,unit:'J',ins:[G,h]}}},
+ {tags:['G','Gh'],f:()=>{const m=rnd(2,60,'kg'),h=rnd(0.8,12,'m'),G=m.v*10,n=name();
+   return {text:`${n} nostaa ${B(m)} painavan ${pick(['laatikon','sementtisäkin','koiranruokasäkin','kaiuttimen'])} ${B(h)} korkealle hyllylle. Kuinka paljon ${n} tekee työtä?`,
+   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('W')} = ${V('G')}${V('h')}`,`${V('W')} = ${raw(G)} N · ${h.t}`],x:G*h.v,unit:'J',ins:[m,h]}}},
+ {tags:['ramp'],f:()=>{const F=rnd(40,400,'N'),s=rnd(2,15,'m');
+   return {text:`Pyörätuoli työnnetään luiskaa pitkin ylös. Työntövoima on ${B(F)} ja luiskan pituus ${B(s)}. Kuinka paljon työtä tehdään?`,
+   steps:[`Kaltevalla tasolla työ on matkan suuntainen voima kertaa luiskan pituus: ${V('W')} = ${V('F')}${V('s')}`,`${V('W')} = ${F.t} · ${s.t}`],x:F.v*s.v,unit:'J',ins:[F,s]}}},
+ {tags:['ramp','G'],f:()=>{const m=rnd(5,90,'kg'),h=rnd(0.4,2.5,'m'),G=m.v*10;
+   return {text:`${B(m)} ${pick(['laatikko','pesukone','vierityskärry'])} viedään luiskaa pitkin ${B(h)} korkealle lavalle. Kuinka paljon työtä tarvitaan? (Kitkaa ei huomioida.)`,
+   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`Kaltevalla tasolla ${V('F')}${V('s')} = ${V('G')}${V('h')}, joten työ on yhtä suuri kuin nostotyö.`,`${V('W')} = ${V('G')}${V('h')} = ${raw(G)} N · ${h.t}`],x:G*h.v,unit:'J',ins:[m,h]}}},
+ {tags:['P'],f:()=>{const W=rnd(200,9000,'J'),t=rnd(2,60,'s');
+   return {text:`${pick(['Sähkömoottori','Pumppu','Vinssi','Kuntopyöräilijä'])} tekee ${B(W)} työtä ajassa ${B(t)}. Mikä on teho?`,
+   steps:[`${V('P')} = ${V('W')} / ${V('t')}`,`${V('P')} = ${W.t} / ${t.t}`],x:W.v/t.v,unit:'W',ins:[W,t]}}},
+ {tags:['G','Gh','P'],f:()=>{const m=rnd(10,80,'kg'),h=rnd(0.4,2.2,'m'),t=rnd(0.8,4,'s'),G=m.v*10,W=G*h.v,n=name();
+   return {text:`${n} nostaa ${B(m)} levytangon ${B(h)} korkeudelle ajassa ${B(t)}. Mikä on hänen tehonsa?`,
+   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`Työ: ${V('W')} = ${V('G')}${V('h')} = ${raw(G)} N · ${h.t} = ${raw(W)} J`,`${V('P')} = ${V('W')} / ${V('t')}`,`${V('P')} = ${raw(W)} J / ${t.t}`],x:W/t.v,unit:'W',ins:[m,h,t]}}},
+ {tags:['Fs','P'],f:()=>{const F=rnd(50,400,'N'),s=rnd(5,60,'m'),t=rnd(5,60,'s'),W=F.v*s.v;
+   return {text:`Auto työnnetään ${B(s)} matkan voimalla ${B(F)}. Siihen kuluu ${B(t)}. Mikä on työntäjien yhteinen teho?`,
+   steps:[`Työ: ${V('W')} = ${V('F')}${V('s')} = ${F.t} · ${s.t} = ${raw(W)} J`,`${V('P')} = ${V('W')} / ${V('t')}`,`${V('P')} = ${raw(W)} J / ${t.t}`],x:W/t.v,unit:'W',ins:[F,s,t]}}},
+];
+
+function rampVals(){const s=rnd(2,12,'m');const h=rnd(0.3,Math.min(3,s.v*0.6),'m');const m=rnd(5,90,'kg');return {s,h,m,G:m.v*10};}
+
+const HARD=[
+ {tags:['Fs'],f:()=>{const F=rnd(15,400,'N'),W=wIn(F.v*(2+rand()*38)),n=name();
+   return {text:`${n} tekee ${B(W)} työtä työntäessään ${pick(['kärryä','pulkkaa','laatikkoa'])} voimalla ${B(F)}. Kuinka pitkän matkan ${n} työntää sitä?`,
+   steps:[W.conv,`${V('W')} = ${V('F')}${V('s')}  ⟹  ${V('s')} = ${V('W')} / ${V('F')}`,`${V('s')} = ${W.J} / ${F.t}`].filter(Boolean),x:W.v/F.v,unit:'m',ins:[W,F]}}},
+ {tags:['Fs'],f:()=>{const s=rnd(2,40,'m'),W=wIn(s.v*(30+rand()*500));
+   return {text:`Hevonen vetää rekeä ${B(s)} matkan ja tekee ${B(W)} työtä. Kuinka suurella voimalla hevonen vetää?`,
+   steps:[W.conv,`${V('W')} = ${V('F')}${V('s')}  ⟹  ${V('F')} = ${V('W')} / ${V('s')}`,`${V('F')} = ${W.J} / ${s.t}`].filter(Boolean),x:W.v/s.v,unit:'N',ins:[W,s]}}},
+ {tags:['G','Gh'],f:()=>{const m=rnd(5,200,'kg'),G=m.v*10,W=wIn(G*(2+rand()*23));
+   return {text:`Nosturi nostaa ${B(m)} kuorman ja tekee siinä ${B(W)} työtä. Kuinka korkealle kuorma nostetaan?`,
+   steps:[W.conv,`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('W')} = ${V('G')}${V('h')}  ⟹  ${V('h')} = ${V('W')} / ${V('G')}`,`${V('h')} = ${W.J} / ${raw(G)} N`].filter(Boolean),x:W.v/G,unit:'m',ins:[W,m]}}},
+ {tags:['Gh'],f:()=>{const G=rnd(30,900,'N'),W=wIn(G.v*(1+rand()*14));
+   return {text:`${pick(['Laatikko','Ämpäri','Kattotiilipino'])}, jonka paino on ${B(G)}, nostetaan ylös. Nostotyö on ${B(W)}. Kuinka korkealle se nostetaan?`,
+   steps:[W.conv,`${V('W')} = ${V('G')}${V('h')}  ⟹  ${V('h')} = ${V('W')} / ${V('G')}`,`${V('h')} = ${W.J} / ${G.t}`].filter(Boolean),x:W.v/G.v,unit:'m',ins:[W,G]}}},
+ {tags:['G','Gh'],f:()=>{const h=rnd(0.8,5,'m'),W=wIn(h.v*10*(2+rand()*58)),n=name(),G=W.v/h.v;
+   return {text:`${n} nostaa ${pick(['laatikon','repun','kukkaruukun','matkalaukun'])} ${B(h)} korkeuteen ja tekee ${B(W)} työtä. Mikä on nostetun esineen massa?`,
+   steps:[W.conv,`${V('W')} = ${V('G')}${V('h')}  ⟹  ${V('G')} = ${V('W')} / ${V('h')}`,`${V('G')} = ${W.J} / ${h.t} = ${raw(G)} N`,`${V('G')} = ${V('m')} · 10 N/kg  ⟹  ${V('m')} = ${V('G')} / (10 N/kg)`,`${V('m')} = ${raw(G)} N / (10 N/kg)`].filter(Boolean),x:G/10,unit:'kg',ins:[W,h]}}},
+ {tags:['G'],f:()=>{const G=rnd(5,950,'N');
+   return {text:`${pick(['Matkalaukun','Koiran','Sohvan','Mopon'])} paino on ${B(G)}. Mikä on sen massa?`,
+   steps:[`${V('G')} = ${V('m')} · 10 N/kg  ⟹  ${V('m')} = ${V('G')} / (10 N/kg)`,`${V('m')} = ${G.t} / (10 N/kg)`],x:G.v/10,unit:'kg',ins:[G]}}},
+ {tags:['ramp','G'],f:()=>{const {s,h,m,G}=rampVals();
+   return {text:`${B(m)} laatikko työnnetään ${B(s)} pitkää luiskaa pitkin ${B(h)} korkealle lavalle. Kuinka suurella voimalla laatikkoa pitää työntää? (Kitkaa ei huomioida.)`,
+   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('F')}${V('s')} = ${V('G')}${V('h')}  ⟹  ${V('F')} = ${V('G')}${V('h')} / ${V('s')}`,`${V('F')} = ${raw(G)} N · ${h.t} / ${s.t}`],x:G*h.v/s.v,unit:'N',ins:[m,s,h]}}},
+ {tags:['ramp','G'],f:()=>{const {s,h,m,G}=rampVals();const F=inp(G*h.v/s.v,sfp(),'N');
+   return {text:`Muuttomies jaksaa työntää korkeintaan ${B(F)} voimalla. Hänen pitää saada ${B(m)} pakastin ${B(h)} korkeaan kuorma-autoon luiskaa pitkin. Kuinka pitkä luiskan pitää olla? (Kitkaa ei huomioida.)`,
+   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('F')}${V('s')} = ${V('G')}${V('h')}  ⟹  ${V('s')} = ${V('G')}${V('h')} / ${V('F')}`,`${V('s')} = ${raw(G)} N · ${h.t} / ${F.t}`],x:G*h.v/F.v,unit:'m',ins:[F,m,h]}}},
+ {tags:['ramp','G'],f:()=>{const {s,h,m,G}=rampVals();const F=inp(G*h.v/s.v,sfp(),'N'),n=name();
+   return {text:`${n} työntää ${B(m)} mopon ${B(s)} pitkää ramppia ylös voimalla ${B(F)}. Kuinka korkealla rampin yläpää on? (Kitkaa ei huomioida.)`,
+   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('F')}${V('s')} = ${V('G')}${V('h')}  ⟹  ${V('h')} = ${V('F')}${V('s')} / ${V('G')}`,`${V('h')} = ${F.t} · ${s.t} / ${raw(G)} N`],x:F.v*s.v/G,unit:'m',ins:[F,s,m]}}},
+ {tags:['ramp'],f:()=>{const {s,h}=rampVals();const G=rnd(80,900,'N');
+   return {text:`Tynnyri, jonka paino on ${B(G)}, vieritetään ${B(s)} pitkää lankkua pitkin ${B(h)} korkealle. Kuinka suuri voima tarvitaan? (Kitkaa ei huomioida.)`,
+   steps:[`${V('F')}${V('s')} = ${V('G')}${V('h')}  ⟹  ${V('F')} = ${V('G')}${V('h')} / ${V('s')}`,`${V('F')} = ${G.t} · ${h.t} / ${s.t}`],x:G.v*h.v/s.v,unit:'N',ins:[G,s,h]}}},
+ {tags:['P'],f:()=>{const P=rnd(100,2500,'W'),W=wIn(P.v*(3+rand()*120));
+   return {text:`${pick(['Sähköpora','Vesipumppu','Pölynimuri','Moottori'])}, jonka teho on ${B(P)}, tekee ${B(W)} työtä. Kuinka kauan se on käynnissä?`,
+   steps:[W.conv,`${V('P')} = ${V('W')} / ${V('t')}  ⟹  ${V('t')} = ${V('W')} / ${V('P')}`,`${V('t')} = ${W.J} / ${P.t}`].filter(Boolean),x:W.v/P.v,unit:'s',ins:[W,P]}}},
+ {tags:['P'],f:()=>{const P=rnd(50,2000,'W'),t=rnd(3,90,'s');
+   return {text:`${pick(['Kuntopyöräilijä','Vinssi','Sähkömoottori','Soutaja'])} toimii teholla ${B(P)} ajan ${B(t)}. Kuinka paljon työtä tehdään?`,
+   steps:[`${V('P')} = ${V('W')} / ${V('t')}  ⟹  ${V('W')} = ${V('P')}${V('t')}`,`${V('W')} = ${P.t} · ${t.t}`],x:P.v*t.v,unit:'J',ins:[P,t]}}},
+ {tags:['P','G','Gh'],f:()=>{const P=rnd(2000,9000,'W'),m=rnd(200,950,'kg'),h=rnd(3,30,'m'),G=m.v*10,W=G*h.v;
+   return {text:`Hissin moottorin teho on ${B(P)}. Kuinka kauan kestää nostaa ${B(m)} kuorma ${B(h)} korkeudelle?`,
+   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`Työ: ${V('W')} = ${V('G')}${V('h')} = ${raw(G)} N · ${h.t} = ${raw(W)} J`,`${V('P')} = ${V('W')} / ${V('t')}  ⟹  ${V('t')} = ${V('W')} / ${V('P')}`,`${V('t')} = ${raw(W)} J / ${P.t}`],x:W/P.v,unit:'s',ins:[P,m,h]}}},
+ {tags:['P','Fs'],f:()=>{const P=rnd(80,400,'W'),t=rnd(10,120,'s'),s=rnd(50,900,'m'),W=P.v*t.v;
+   return {text:`Pyöräilijä polkee teholla ${B(P)} ajan ${B(t)} ja kulkee sinä aikana ${B(s)}. Kuinka suurella voimalla pyörää viedään eteenpäin?`,
+   steps:[`${V('P')} = ${V('W')} / ${V('t')}  ⟹  ${V('W')} = ${V('P')}${V('t')} = ${P.t} · ${t.t} = ${raw(W)} J`,`${V('W')} = ${V('F')}${V('s')}  ⟹  ${V('F')} = ${V('W')} / ${V('s')}`,`${V('F')} = ${raw(W)} J / ${s.t}`],x:W/s.v,unit:'N',ins:[P,t,s]}}},
+];
+
+/* ---------- vastaus ja pyöristys ---------- */
+function finish(t){
+  const n=Math.min(...t.ins.map(i=>i.sf));
+  const weak=t.ins.filter(i=>i.sf===n).map(i=>i.t);
+  const res=fmtSig(t.x,n);const exact=raw(t.x);
+  const amb=digits(res)<n;
+  const last=t.steps.length-1;
+  t.steps[last]+=` = ${exact} ${t.unit}`+(exact!==res?` ≈ <b>${res} ${t.unit}</b>`:'');
+  let alt='';const r=roundSig(t.x,n);
+  if((t.unit==='J'||t.unit==='W')&&Math.abs(r)>=1000) alt=`= ${fmtSig(r/1000,n)} k${t.unit}`;
+  if(amb) alt+=(alt?' ':'')+`(${n} merkitsevää numeroa)`;
+  const nn=n===1?'yhteen merkitsevään numeroon':`${n} merkitsevään numeroon`;
+  const round=(weak.length>1?`Epätarkimmat lähtöarvot (${weak.join(', ')}) ovat`:`Epätarkin lähtöarvo (${weak[0]}) on`)+` ${n===1?'yhden':n} merkitsevän numeron tarkkuudella, joten vastaus pyöristetään ${nn}.`;
+  return {res:`${res} ${t.unit}`,alt,round};
+}
+
+/* ---------- UI ---------- */
+const $=id=>document.getElementById(id);
+let count=0,last=null;
+FORMULAS.forEach(fm=>{const b=document.createElement('button');b.type='button';b.className='fchip';b.id='f-'+fm.id;
+  b.setAttribute('aria-pressed','true');b.innerHTML=`<b>${fm.label}</b>`;
+  b.addEventListener('click',()=>{on[fm.id]=!on[fm.id];b.setAttribute('aria-pressed',on[fm.id]);updCount();});
+  $('formulas').appendChild(b);});
+function updCount(){const k=FORMULAS.filter(f=>on[f.id]).length;
+  $('fcount').textContent=k===FORMULAS.length?'Napauta aihetta, niin sen tehtävät jäävät pois':`${k}/${FORMULAS.length} aihetta käytössä`;}
+[['t-kaavat','p-kaavat'],['t-suureet','p-suureet'],['t-pyor','p-pyor']].forEach(([b,p])=>{$(b).addEventListener('click',()=>{const open=$(p).hidden;$(p).hidden=!open;$(b).setAttribute('aria-expanded',open);});});
+
+function make(level){
+  const list=(level==='easy'?EASY:HARD).filter(g=>g.tags.every(t=>on[t]));
+  $('answer').hidden=true;$('btn-answer').textContent='Näytä vastaus';
+  if(!list.length){
+    $('meta').hidden=true;$('btn-answer').hidden=true;$('task').className='task empty';
+    $('task').textContent=`Valituilla kaavoilla ei synny ${level==='easy'?'perustehtäviä':'vaikeita tehtäviä'}. Ota käyttöön lisää aiheita yläpuolelta.`;return;}
+  let g;do{g=pick(list)}while(g===last&&list.length>1);last=g;
+  const t=g.f();const a=finish(t);count++;
+  $('meta').hidden=false;$('btn-answer').hidden=false;$('task').className='task';
+  $('badge').textContent=level==='easy'?'Perustehtävä':'Vaikea';$('badge').className='badge '+level;
+  $('num').textContent='Tehtävä '+count;
+  $('task').innerHTML=t.text;
+  $('res').innerHTML=a.res+(a.alt?`<small>${a.alt}</small>`:'');
+  $('steps').innerHTML=t.steps.map(s=>`<li>${s}</li>`).join('');
+  $('round').textContent=a.round;
+}
+$('btn-easy').addEventListener('click',()=>make('easy'));
+$('btn-hard').addEventListener('click',()=>make('hard'));
+$('btn-answer').addEventListener('click',()=>{const a=$('answer');a.hidden=!a.hidden;$('btn-answer').textContent=a.hidden?'Näytä vastaus':'Piilota vastaus'});
+make('easy');
+</script>
+
+</body></html>
