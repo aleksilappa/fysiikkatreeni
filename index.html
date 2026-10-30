@@ -7,18 +7,18 @@
 /* Layout: one centered column — formula toggles, two big buttons, a task card on squared notebook paper with the answer folding open beneath. */
 :root{
   --bg:#eef2f7; --paper:#ffffff; --grid:#d6e2f0; --ink:#17243d; --muted:#5a6880;
-  --accent:#2350c8; --accent-ink:#ffffff; --easy:#1d7a55; --hard:#b4381f;
+  --accent:#2350c8; --accent-ink:#ffffff; --easy:#1d7a55; --hard:#b4381f; --chal:#6a3fb0;
   --mark:#ffe873; --line:#c9d5e4;
   --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0f1522; --paper:#161f31; --grid:#22304a; --ink:#e6ecf7; --muted:#9aa8c0;
-  --accent:#7ea2ff; --accent-ink:#0f1522; --easy:#5fd3a2; --hard:#ff8f73;
+  --accent:#7ea2ff; --accent-ink:#0f1522; --easy:#5fd3a2; --hard:#ff8f73; --chal:#c3a6ff;
   --mark:#6b5a12; --line:#2c3a55; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0f1522; --paper:#161f31; --grid:#22304a; --ink:#e6ecf7; --muted:#9aa8c0;
-  --accent:#7ea2ff; --accent-ink:#0f1522; --easy:#5fd3a2; --hard:#ff8f73;
+  --accent:#7ea2ff; --accent-ink:#0f1522; --easy:#5fd3a2; --hard:#ff8f73; --chal:#c3a6ff;
   --mark:#6b5a12; --line:#2c3a55; color-scheme:dark}
 
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
@@ -32,7 +32,7 @@ h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,6vw,44px);lin
 .fhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
 .fhead h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0}
 .fhead span{font-size:14px;color:var(--muted)}
-.formulas{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.formulas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 @media (max-width:640px){.formulas{grid-template-columns:repeat(2,1fr)}}
 .fchip{background:var(--paper);border:1.5px solid var(--accent);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0;text-align:left;color:var(--ink);position:relative}
 .fchip span{font-size:12px;color:var(--muted);letter-spacing:.03em}
@@ -51,6 +51,11 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .btn-task{font-family:var(--display);font-weight:700;font-size:19px;padding:16px 14px;border:2px solid currentColor;background:var(--paper);display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left}
 .btn-task small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted)}
 .btn-easy{color:var(--easy)} .btn-hard{color:var(--hard)}
+.chal-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:-8px}
+.chal-row span{font-size:14px;color:var(--muted)}
+.btn-chal{background:var(--paper);color:var(--chal);border:1.5px dashed var(--chal);padding:7px 14px;font-weight:700;font-size:14px;border-radius:999px}
+.btn-chal:hover{border-style:solid}
+.badge.chal{color:var(--chal)}
 .btn-task:hover{background:color-mix(in srgb, currentColor 8%, var(--paper))}
 
 .card{background-color:var(--paper);
@@ -70,7 +75,17 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .answer .res{font-family:var(--display);font-weight:800;font-size:28px;font-variant-numeric:tabular-nums}
 .answer .res small{font-family:var(--body);font-weight:400;font-size:16px;color:var(--muted);margin-left:8px}
 .answer .lbl{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.answer ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px;font-variant-numeric:tabular-nums}
+.steps{display:flex;flex-direction:column;gap:6px;font-variant-numeric:tabular-nums;overflow-x:auto;padding-block:2px}
+.steps .sn{margin:0;color:var(--muted);font-size:15px;max-width:62ch}
+.er{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;white-space:nowrap;min-height:2.2em}
+.er .lab{color:var(--muted);font-size:14px}
+.er.form{font-weight:700}
+.giv{display:flex;flex-direction:column;gap:2px;padding:2px 0 6px;white-space:nowrap}
+.steps .sn+.er.form,.giv+.er,.er+.sn{margin-top:4px}
+.er .op{border-left:2px solid var(--ink);padding:2px 0 2px 10px;margin-left:10px;align-self:stretch;display:flex;align-items:center;font-weight:700;color:var(--accent)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;line-height:1.25}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 4px 1px}
+.frac>span:last-child{padding:1px 4px 0}
 .answer .round{font-size:15px;color:var(--muted);margin:0;max-width:62ch}
 .tools{display:flex;gap:8px;flex-wrap:wrap}
 .btn-tool{background:var(--paper);color:var(--ink);border:1.5px solid var(--line);padding:8px 14px;font-weight:700;font-size:15px;border-radius:999px}
@@ -110,6 +125,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
       <div><span>Työ</span><b><i class="v">W</i> = <i class="v">F</i><i class="v">s</i></b></div>
       <div><span>Nostotyö</span><b><i class="v">W</i> = <i class="v">G</i><i class="v">h</i></b></div>
       <div><span>Kalteva taso</span><b><i class="v">F</i><i class="v">s</i> = <i class="v">G</i><i class="v">h</i></b></div>
+      <div><span>Kaksivartinen vipu</span><b><i class="v">G</i><i class="v">a</i> = <i class="v">F</i><i class="v">b</i></b></div>
       <div><span>Teho</span><b><i class="v">P</i> = <i class="v">W</i> / <i class="v">t</i></b></div>
     </div>
   </section>
@@ -124,12 +140,14 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
         <tr><td>voima</td><td><i class="v">F</i></td><td>newton, N</td></tr>
         <tr><td>matka</td><td><i class="v">s</i></td><td>metri, m</td></tr>
         <tr><td>korkeus</td><td><i class="v">h</i></td><td>metri, m</td></tr>
+        <tr><td>kuorman varsi</td><td><i class="v">a</i></td><td>metri, m</td></tr>
+        <tr><td>voiman varsi</td><td><i class="v">b</i></td><td>metri, m</td></tr>
         <tr><td>työ</td><td><i class="v">W</i></td><td>joule, J</td></tr>
         <tr><td>aika</td><td><i class="v">t</i></td><td>sekunti, s</td></tr>
         <tr><td>teho</td><td><i class="v">P</i></td><td>watti, W</td></tr>
       </tbody>
     </table></div>
-    <p>1 kJ = 1000 J ja 1 kW = 1000 W</p>
+    <p>1 kJ = 1000 J · 1 kW = 1000 W</p>
   </section>
 
   <section class="panel" id="p-pyor" hidden>
@@ -151,6 +169,10 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
     <button class="btn-task btn-easy" id="btn-easy" type="button">Tee perustehtävä<small>Sijoita kaavaan ja laske</small></button>
     <button class="btn-task btn-hard" id="btn-hard" type="button">Tee vaikea tehtävä<small>Ratkaise yhtälöstä tuntematon</small></button>
   </div>
+  <div class="chal-row">
+    <button class="btn-chal" id="btn-chal" type="button">Tee haastava tehtävä</button>
+    <span>Kun vaikeat sujuvat. Näissä pitää hoksata jotain lisää.</span>
+  </div>
 
   <article class="card" aria-live="polite">
     <div class="meta" id="meta"><span class="badge" id="badge"></span><span class="num" id="num"></span></div>
@@ -158,7 +180,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
     <button class="btn-answer" id="btn-answer" type="button">Näytä vastaus</button>
     <div class="answer" id="answer" hidden>
       <div><div class="lbl">Vastaus</div><div class="res" id="res"></div></div>
-      <div><div class="lbl">Ratkaisu</div><ol id="steps"></ol></div>
+      <div><div class="lbl">Ratkaisu</div><div class="steps" id="steps"></div></div>
       <p class="round" id="round"></p>
     </div>
   </article>
@@ -194,87 +216,320 @@ const FORMULAS=[
   {id:'Fs', label:'Työ'},
   {id:'Gh', label:'Nostotyö'},
   {id:'ramp',label:'Kalteva taso'},
+  {id:'lever',label:'Kaksivartinen vipu'},
   {id:'P',  label:'Teho'},
 ];
 const on=Object.fromEntries(FORMULAS.map(f=>[f.id,true]));
 
+/* ---------- tilanteet ----------
+   Jokaisella tilanteella on omat realistiset lukuvälinsä. Ensin arvotaan tilanne, sitten luvut sen väleistä.
+   Vaikeissa tehtävissä arvotaan ensin tuntematon tilanteen välistä ja annettu arvo lasketaan siitä. */
+const R=(a,unit)=>rnd(a[0],a[1],unit);
+const U=a=>a[0]+rand()*(a[1]-a[0]);
+const who=sc=>sc.subj||name();
+const paino=(m,G)=>`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`;
+const NF=' (Kitkaa ei huomioida.)';
+
+/* Nostot */
+const LIFT=[
+ {verb:'nostaa',obj:'kirjan',nom:'kirja',m:[0.3,2],h:[0.8,2.1],t:[0.5,2],to:h=>`${h} korkealle hyllylle`,toU:'hyllylle',askH:'Kuinka korkealla hylly on?'},
+ {verb:'nostaa',obj:'matkalaukun',nom:'matkalaukku',m:[8,25],h:[0.6,1],t:[1,3],to:h=>`auton takakonttiin ${h} korkeudelle`,toU:'auton takakonttiin',askH:'Kuinka korkealla takakontin pohja on?'},
+ {verb:'nostaa',obj:'koulurepun',nom:'koulureppu',m:[3,9],h:[0.6,0.9],t:[0.5,1.5],to:h=>`lattialta ${h} korkealle pöydälle`,toU:'lattialta pöydälle',askH:'Kuinka korkea pöytä on?'},
+ {verb:'nostaa',obj:'levytangon',nom:'levytanko',m:[20,120],h:[1.6,2.2],t:[0.8,3],to:h=>`lattialta ${h} korkeudelle pään yläpuolelle`,toU:'lattialta pään yläpuolelle',askH:'Kuinka korkealle tanko nousee?'},
+ {verb:'vetää',obj:'vesisangon',nom:'vesisanko',m:[5,12],h:[3,10],t:[5,20],to:h=>`kaivosta ${h} syvyydestä`,toU:'kaivosta ylös',askH:'Kuinka syvä kaivo on?'},
+ {subj:'Rakennusmies',verb:'vetää köydellä',obj:'tiiliämpärin',nom:'tiiliämpäri',m:[10,25],h:[3,8],t:[4,12],to:h=>`${h} korkealla oleville telineille`,toU:'telineille',askH:'Kuinka korkealla telineet ovat?'},
+ {subj:'Rakennusnosturi',verb:'nostaa',obj:'betonielementin',nom:'betonielementti',m:[500,3000],h:[10,40],t:[30,120],to:h=>`${h} korkeudelle`,toU:'rakennuksen katolle',askH:'Kuinka korkealla katto on?',motor:'Nosturin moottorin'},
+ {subj:'Hissi',verb:'nostaa',obj:'kuorman',nom:'kuorma',m:[150,900],h:[3,30],t:[5,40],to:h=>`${h} ylemmäs`,toU:'ylimpään kerrokseen',askH:'Kuinka korkealle hissi nousee?',motor:'Hissin moottorin'},
+ {subj:'Veneen vinssi',verb:'nostaa',obj:'ankkurin',nom:'ankkuri',m:[5,30],h:[2,20],t:[5,30],to:h=>`${h} syvyydestä`,toU:'järven pohjasta',askH:'Kuinka syvältä ankkuri nostetaan?',motor:'Vinssin moottorin'},
+];
+/* Vetäminen ja työntäminen vaakasuoraan */
+const PUSH=[
+ {verb:'työntää ostoskärryä',F:[20,80],s:[5,40],t:[5,40],fq:'Kuinka suurella voimalla kärryä työnnetään?',sq:'Kuinka pitkän matkan kärry kulkee?'},
+ {verb:'vetää pulkkaa tasaisella jäällä',F:[20,100],s:[20,300],t:[20,300],fq:'Kuinka suurella voimalla pulkkaa vedetään?',sq:'Kuinka pitkän matkan pulkkaa vedetään?'},
+ {subj:'Muuttomies',verb:'siirtää sohvaa lattiaa pitkin',F:[150,450],s:[1,6],t:[3,15],fq:'Kuinka suurella voimalla sohvaa työnnetään?',sq:'Kuinka pitkän matkan sohva siirtyy?'},
+ {subj:'Kolme kaverusta',verb:'työntää sammunutta autoa',F:[300,900],s:[5,60],t:[10,60],fq:'Kuinka suurella voimalla autoa työnnetään?',sq:'Kuinka pitkän matkan autoa työnnetään?'},
+ {subj:'Hevonen',verb:'vetää rekeä',F:[300,1500],s:[50,800],t:[60,600],fq:'Kuinka suurella voimalla hevonen vetää?',sq:'Kuinka pitkän matkan hevonen vetää rekeä?'},
+ {subj:'Oppilaat',verb:'siirtävät jalkapallomaalia nurmella',F:[200,600],s:[5,30],t:[10,40],fq:'Kuinka suurella voimalla maalia siirretään?',sq:'Kuinka pitkän matkan maalia siirretään?'},
+];
+/* Kalteva taso */
+const RAMP=[
+ {verb:'työntää',obj:'pyörätuolin istujineen',nom:'Pyörätuoli istujineen',m:[70,130],h:[0.2,0.8],s:[3,10],slope:0.15,rp:'luiskaa',rn:'luiska',to:h=>`${h} korkeudella olevalle ovelle`,toU:'ovelle',askH:'Kuinka korkealla ovi on?',can:'jaksaa työntää'},
+ {subj:'Muuttomies',verb:'työntää',obj:'pakastimen',nom:'Pakastin',m:[40,90],h:[0.8,1.3],s:[2,5],rp:'luiskaa',rn:'luiska',to:h=>`${h} korkeaan kuorma-autoon`,toU:'kuorma-autoon',askH:'Kuinka korkealla kuorma-auton lava on?',can:'jaksaa työntää'},
+ {verb:'työntää',obj:'mopon',nom:'Mopo',m:[70,110],h:[0.4,0.8],s:[2,4],rp:'ramppia',rn:'ramppi',to:h=>`${h} korkeaan peräkärryyn`,toU:'peräkärryyn',askH:'Kuinka korkealla peräkärryn pohja on?',can:'jaksaa työntää'},
+ {verb:'vierittää',obj:'tynnyrin',nom:'Tynnyri',m:[50,200],h:[0.5,1.5],s:[2,6],rp:'lankkua',rn:'lankku',to:h=>`${h} korkealle laiturille`,toU:'laiturille',askH:'Kuinka korkealla laituri on?',can:'jaksaa vierittää'},
+ {subj:'Kaksi muuttomiestä',verb:'työntää',obj:'pianon',nom:'Piano',m:[150,300],h:[0.6,1.2],s:[3,6],rp:'luiskaa',rn:'luiska',to:h=>`${h} korkealle lavalle`,toU:'lavalle',askH:'Kuinka korkealla lava on?',can:'jaksaa yhdessä työntää'},
+ {verb:'työntää',obj:'laatikon',nom:'Laatikko',m:[10,60],h:[0.4,1.2],s:[1.5,4],rp:'luiskaa',rn:'luiska',to:h=>`${h} korkealle lavalle`,toU:'lavalle',askH:'Kuinka korkealla lava on?',can:'jaksaa työntää'},
+];
+function rampDraw(sc){for(let i=0;i<60;i++){const h=R(sc.h,'m'),s=R(sc.s,'m');if(h.v<=s.v*(sc.slope||0.5))return {h,s};}
+  return {h:inp(sc.h[0],2,'m'),s:inp(sc.s[1],2,'m')};}
+/* Massa ja paino */
+const MASS=[['Repun',2,9],['Koiran',5,40],['Polkupyörän',9,18],['Mopon',70,110],['Henkilöauton',1000,2000],['Omenan',0.1,0.3],
+ ['Kännykän',0.15,0.25],['Norsun',2500,6000],['Jääkaapin',40,90],['Kissan',3,6],['Jalkapallon',0.4,0.45],['Kuorma-auton',8000,20000]];
+/* Teho */
+const POW=[
+ {subj:'Sähköpora',verb:'käy',P:[400,1000],t:[5,60]},
+ {subj:'Vesipumppu',verb:'pumppaa vettä',P:[300,1500],t:[10,180]},
+ {subj:'Kuntopyöräilijä',verb:'polkee',P:[80,300],t:[30,300]},
+ {subj:'Soutaja',verb:'soutaa',P:[100,400],t:[20,240]},
+ {subj:'Sähköpotkulaudan moottori',verb:'käy',P:[250,500],t:[10,180]},
+ {subj:'Hiihtäjä',verb:'hiihtää',P:[150,400],t:[30,300]},
+];
+
+/* ---------- ratkaisurivit ----------
+   Ratkaisu koostuu lohkoista: kaava → lähtöarvot allekkain → sijoitus ja ratkaisu (temppuviiva).
+   Rivi on selitysteksti (merkkijono), yhtälö E(eq, op, lab) tai lähtöarvolista {given:[...]}. */
+const fr=(a,b)=>`<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const E=(eq,op,lab,form)=>({eq,op,lab,form});
+const val=(x,u)=>`${raw(x)} ${u}`;
+const FS=`${V('F')}${V('s')}`, GH=`${V('G')}${V('h')}`, PWT=fr(V('W'),V('t')), MG=`${V('m')} · 10 N/kg`;
+/* lähtöarvot */
+const GV=(s,t)=>`${V(s)} = ${t}`;
+const Q=s=>`${V(s)} = ?`;
+const num=m=>m.t.replace(/ kg$/,'');
+const GM=m=>`${V('G')} = ${num(m)} · 10 N = ${val(m.v*10,'N')}`;
+const wg=W=>W.t===W.J?W.t:`${W.t} = ${W.J}`;
+/* lohko: kaava, lähtöarvot, ratkaisu */
+/* jos kysyttyä suuretta ei ole merkitty, se on kaavan vasen puoli (myös välivaiheissa) */
+/* lähtöarvot samaan järjestykseen kuin suureet kaavassa vasemmalta oikealle */
+const syms=h=>[...h.matchAll(/<i class="v">(\w)<\/i>/g)].map(x=>x[1]);
+const ord=(giv,order)=>giv.map((g,i)=>[order.indexOf(syms(g)[0]),i,g]).sort((a,b)=>(a[0]-b[0])||(a[1]-b[1])).map(x=>x[2]);
+const blk=(lhs,form,giv,rest)=>{const g=giv.some(x=>x.endsWith('= ?'))?giv:[...giv,Q(lhs)];
+  return [E(`${V(lhs)} = ${form}`,null,null,1),{given:ord(g,[lhs,...syms(form)])},...rest];};
+const blkR=(giv,rest)=>[E(`${FS} = ${GH}`,null,null,1),{given:ord(giv,['F','s','G','h'])},...rest];
+/* sijoitus suoraan kaavaan (lopputulos lisätään finish-funktiossa) */
+const subD=(lhs,sub)=>[E(`${V(lhs)} = ${sub}`)];
+/* lisää välituloksen arvo viimeiselle riville */
+const fin=(L,x,u)=>{L[L.length-1].eq+=` = ${val(x,u)}`;return L;};
+/* X = A · B, toinen tekijä tuntematon. A ja B: [tunnus, arvo tai null]; vakio [null, '10 N/kg'] */
+function pS(xt,A,B){
+  const uA=A[1]==null,k=uA?B:A,u=uA?A:B;
+  const sub=uA?`${V(A[0])} · ${B[1]}`:`${A[1]} · ${V(B[0])}`;
+  return [E(`${xt} = ${sub}`,`: ${k[1]}`),E(`${V(u[0])} = ${fr(xt,k[1])}`)];
+}
+/* P = W / t, tuntematon W tai t (null) */
+function qS(Pt,Wt,tt){
+  if(tt==null) return [E(`${Pt} = ${fr(Wt,V('t'))}`,`· ${V('t')}`),E(`${Pt} · ${V('t')} = ${Wt}`,`: ${Pt}`),E(`${V('t')} = ${fr(Wt,Pt)}`)];
+  return [E(`${Pt} = ${fr(V('W'),tt)}`,`· ${tt}`),E(`${V('W')} = ${Pt} · ${tt}`)];
+}
+/* Fs = Gh, yksi tuntematon (null) */
+function rS(F,s,G,h){
+  const sub=`${F??V('F')} · ${s??V('s')} = ${G??V('G')} · ${h??V('h')}`;
+  let u,d,n;
+  if(F==null){u='F';d=s;n=`${G} · ${h}`;}
+  else if(s==null){u='s';d=F;n=`${G} · ${h}`;}
+  else if(G==null){u='G';d=h;n=`${F} · ${s}`;}
+  else {u='h';d=G;n=`${F} · ${s}`;}
+  return [E(sub,`: ${d}`),E(`${V(u)} = ${fr(n,d)}`)];
+}
+/* massa painosta */
+const mBlk=(Gt,ask=true)=>blk('G',MG,[GV('G',Gt),...(ask?[Q('m')]:[])],pS(Gt,['m',null],[null,'10 N/kg']));
+
 /* Jokainen tehtävä palauttaa: text, steps (viimeinen = laskun sijoitus), x (tarkka tulos), unit, ins (lähtöarvot) */
 const EASY=[
- {tags:['G'],f:()=>{const m=rnd(2,95,'kg');
-   return {text:`${pick(['Repun','Koiran','Polkupyörän','Kirjapinon','Vesisangon','Rattaiden'])} massa on ${B(m)}. Kuinka suuri on sen paino?`,
-   steps:[`${V('G')} = ${V('m')} · 10 N/kg`,`${V('G')} = ${m.t} · 10 N/kg`],x:m.v*10,unit:'N',ins:[m]}}},
- {tags:['Fs'],f:()=>{const F=rnd(15,400,'N'),s=rnd(1.5,40,'m'),n=name();
-   return {text:`${n} ${pick(['työntää ostoskärryä','vetää pulkkaa','siirtää sohvaa','työntää autoa'])} voimalla ${B(F)} matkan ${B(s)}. Kuinka paljon ${n} tekee työtä?`,
-   steps:[`${V('W')} = ${V('F')}${V('s')}`,`${V('W')} = ${F.t} · ${s.t}`],x:F.v*s.v,unit:'J',ins:[F,s]}}},
- {tags:['Gh'],f:()=>{const G=rnd(20,900,'N'),h=rnd(0.8,15,'m');
-   return {text:`${pick(['Laatikon','Matkalaukun','Kivenlohkareen','Säkin'])} paino on ${B(G)}. Se nostetaan ${B(h)} korkeudelle. Kuinka paljon työtä tehdään?`,
-   steps:[`${V('W')} = ${V('G')}${V('h')}`,`${V('W')} = ${G.t} · ${h.t}`],x:G.v*h.v,unit:'J',ins:[G,h]}}},
- {tags:['G','Gh'],f:()=>{const m=rnd(2,60,'kg'),h=rnd(0.8,12,'m'),G=m.v*10,n=name();
-   return {text:`${n} nostaa ${B(m)} painavan ${pick(['laatikon','sementtisäkin','koiranruokasäkin','kaiuttimen'])} ${B(h)} korkealle hyllylle. Kuinka paljon ${n} tekee työtä?`,
-   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('W')} = ${V('G')}${V('h')}`,`${V('W')} = ${raw(G)} N · ${h.t}`],x:G*h.v,unit:'J',ins:[m,h]}}},
- {tags:['ramp'],f:()=>{const F=rnd(40,400,'N'),s=rnd(2,15,'m');
-   return {text:`Pyörätuoli työnnetään luiskaa pitkin ylös. Työntövoima on ${B(F)} ja luiskan pituus ${B(s)}. Kuinka paljon työtä tehdään?`,
-   steps:[`Kaltevalla tasolla työ on matkan suuntainen voima kertaa luiskan pituus: ${V('W')} = ${V('F')}${V('s')}`,`${V('W')} = ${F.t} · ${s.t}`],x:F.v*s.v,unit:'J',ins:[F,s]}}},
- {tags:['ramp','G'],f:()=>{const m=rnd(5,90,'kg'),h=rnd(0.4,2.5,'m'),G=m.v*10;
-   return {text:`${B(m)} ${pick(['laatikko','pesukone','vierityskärry'])} viedään luiskaa pitkin ${B(h)} korkealle lavalle. Kuinka paljon työtä tarvitaan? (Kitkaa ei huomioida.)`,
-   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`Kaltevalla tasolla ${V('F')}${V('s')} = ${V('G')}${V('h')}, joten työ on yhtä suuri kuin nostotyö.`,`${V('W')} = ${V('G')}${V('h')} = ${raw(G)} N · ${h.t}`],x:G*h.v,unit:'J',ins:[m,h]}}},
- {tags:['P'],f:()=>{const W=rnd(200,9000,'J'),t=rnd(2,60,'s');
-   return {text:`${pick(['Sähkömoottori','Pumppu','Vinssi','Kuntopyöräilijä'])} tekee ${B(W)} työtä ajassa ${B(t)}. Mikä on teho?`,
-   steps:[`${V('P')} = ${V('W')} / ${V('t')}`,`${V('P')} = ${W.t} / ${t.t}`],x:W.v/t.v,unit:'W',ins:[W,t]}}},
- {tags:['G','Gh','P'],f:()=>{const m=rnd(10,80,'kg'),h=rnd(0.4,2.2,'m'),t=rnd(0.8,4,'s'),G=m.v*10,W=G*h.v,n=name();
-   return {text:`${n} nostaa ${B(m)} levytangon ${B(h)} korkeudelle ajassa ${B(t)}. Mikä on hänen tehonsa?`,
-   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`Työ: ${V('W')} = ${V('G')}${V('h')} = ${raw(G)} N · ${h.t} = ${raw(W)} J`,`${V('P')} = ${V('W')} / ${V('t')}`,`${V('P')} = ${raw(W)} J / ${t.t}`],x:W/t.v,unit:'W',ins:[m,h,t]}}},
- {tags:['Fs','P'],f:()=>{const F=rnd(50,400,'N'),s=rnd(5,60,'m'),t=rnd(5,60,'s'),W=F.v*s.v;
-   return {text:`Auto työnnetään ${B(s)} matkan voimalla ${B(F)}. Siihen kuluu ${B(t)}. Mikä on työntäjien yhteinen teho?`,
-   steps:[`Työ: ${V('W')} = ${V('F')}${V('s')} = ${F.t} · ${s.t} = ${raw(W)} J`,`${V('P')} = ${V('W')} / ${V('t')}`,`${V('P')} = ${raw(W)} J / ${t.t}`],x:W/t.v,unit:'W',ins:[F,s,t]}}},
+ {tags:['G'],f:()=>{const [o,lo,hi]=pick(MASS),m=rnd(lo,hi,'kg');
+   return {text:`${o} massa on ${B(m)}. Kuinka suuri on sen paino?`,
+   steps:blk('G',MG,[GV('m',m.t),Q('G')],subD('G',`${num(m)} · 10 N`)),x:m.v*10,unit:'N',ins:[m]}}},
+ {tags:['Fs'],f:()=>{const sc=pick(PUSH),F=R(sc.F,'N'),s=R(sc.s,'m');
+   return {text:`${who(sc)} ${sc.verb} voimalla ${B(F)} matkan ${B(s)}. Kuinka paljon työtä tehdään?`,
+   steps:blk('W',FS,[GV('F',F.t),GV('s',s.t),Q('W')],subD('W',`${F.t} · ${s.t}`)),x:F.v*s.v,unit:'J',ins:[F,s]}}},
+ {tags:['Gh'],f:()=>{const sc=pick(LIFT),G=inp(U(sc.m)*10,sfp(),'N'),h=R(sc.h,'m');
+   return {text:`${who(sc)} ${sc.verb} ${sc.obj}, jonka paino on ${B(G)}, ${sc.to(B(h))}. Kuinka paljon työtä tehdään?`,
+   steps:blk('W',GH,[GV('G',G.t),GV('h',h.t),Q('W')],subD('W',`${G.t} · ${h.t}`)),x:G.v*h.v,unit:'J',ins:[G,h]}}},
+ {tags:['G','Gh'],f:()=>{const sc=pick(LIFT),m=R(sc.m,'kg'),h=R(sc.h,'m'),G=m.v*10;
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${sc.to(B(h))}. Kuinka paljon työtä tehdään?`,
+   steps:blk('W',GH,[GM(m),GV('h',h.t),Q('W')],subD('W',`${val(G,'N')} · ${h.t}`)),x:G*h.v,unit:'J',ins:[m,h]}}},
+ {tags:['ramp'],f:()=>{const sc=pick(RAMP),{h,s}=rampDraw(sc),G=inp(U(sc.m)*10,sfp(),'N');
+   return {text:`${who(sc)} ${sc.verb} ${sc.obj}, jonka paino on ${B(G)}, ${B(s)} pitkää ${sc.rp} pitkin ${sc.to(B(h))}. Kuinka suuri voima tarvitaan?${NF}`,
+   steps:blkR([GV('G',G.t),GV('s',s.t),GV('h',h.t),Q('F')],rS(null,s.t,G.t,h.t)),x:G.v*h.v/s.v,unit:'N',ins:[G,s,h]}}},
+ {tags:['ramp','G'],f:()=>{const sc=pick(RAMP),{h,s}=rampDraw(sc),m=R(sc.m,'kg'),G=m.v*10;
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${B(s)} pitkää ${sc.rp} pitkin ${sc.to(B(h))}. Kuinka suuri voima tarvitaan?${NF}`,
+   steps:blkR([GM(m),GV('s',s.t),GV('h',h.t),Q('F')],rS(null,s.t,val(G,'N'),h.t)),x:G*h.v/s.v,unit:'N',ins:[m,s,h]}}},
+ {tags:['P'],f:()=>{const sc=pick(POW),t=R(sc.t,'s'),W=wIn(U(sc.P)*t.v);
+   return {text:`${sc.subj} ${sc.verb} ajan ${B(t)} ja tekee ${B(W)} työtä. Mikä on teho?`,
+   steps:blk('P',PWT,[GV('W',wg(W)),GV('t',t.t),Q('P')],subD('P',fr(W.J,t.t))),x:W.v/t.v,unit:'W',ins:[W,t]}}},
+ {tags:['G','Gh','P'],f:()=>{const sc=pick(LIFT),m=R(sc.m,'kg'),h=R(sc.h,'m'),t=R(sc.t,'s'),G=m.v*10,W=G*h.v;
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${sc.to(B(h))} ajassa ${B(t)}. Kuinka suurella teholla nosto tehdään?`,
+   steps:['Lasketaan ensin työ.',...blk('W',GH,[GM(m),GV('h',h.t)],fin(subD('W',`${val(G,'N')} · ${h.t}`),W,'J')),
+     'Sitten teho.',...blk('P',PWT,[GV('W',val(W,'J')),GV('t',t.t),Q('P')],subD('P',fr(val(W,'J'),t.t)))],x:W/t.v,unit:'W',ins:[m,h,t]}}},
+ {tags:['Fs','P'],f:()=>{const sc=pick(PUSH),F=R(sc.F,'N'),s=R(sc.s,'m'),t=R(sc.t,'s'),W=F.v*s.v;
+   return {text:`${who(sc)} ${sc.verb} voimalla ${B(F)} matkan ${B(s)}. Siihen kuluu aikaa ${B(t)}. Mikä on teho?`,
+   steps:['Lasketaan ensin työ.',...blk('W',FS,[GV('F',F.t),GV('s',s.t)],fin(subD('W',`${F.t} · ${s.t}`),W,'J')),
+     'Sitten teho.',...blk('P',PWT,[GV('W',val(W,'J')),GV('t',t.t),Q('P')],subD('P',fr(val(W,'J'),t.t)))],x:W/t.v,unit:'W',ins:[F,s,t]}}},
 ];
-
-function rampVals(){const s=rnd(2,12,'m');const h=rnd(0.3,Math.min(3,s.v*0.6),'m');const m=rnd(5,90,'kg');return {s,h,m,G:m.v*10};}
 
 const HARD=[
- {tags:['Fs'],f:()=>{const F=rnd(15,400,'N'),W=wIn(F.v*(2+rand()*38)),n=name();
-   return {text:`${n} tekee ${B(W)} työtä työntäessään ${pick(['kärryä','pulkkaa','laatikkoa'])} voimalla ${B(F)}. Kuinka pitkän matkan ${n} työntää sitä?`,
-   steps:[W.conv,`${V('W')} = ${V('F')}${V('s')}  ⟹  ${V('s')} = ${V('W')} / ${V('F')}`,`${V('s')} = ${W.J} / ${F.t}`].filter(Boolean),x:W.v/F.v,unit:'m',ins:[W,F]}}},
- {tags:['Fs'],f:()=>{const s=rnd(2,40,'m'),W=wIn(s.v*(30+rand()*500));
-   return {text:`Hevonen vetää rekeä ${B(s)} matkan ja tekee ${B(W)} työtä. Kuinka suurella voimalla hevonen vetää?`,
-   steps:[W.conv,`${V('W')} = ${V('F')}${V('s')}  ⟹  ${V('F')} = ${V('W')} / ${V('s')}`,`${V('F')} = ${W.J} / ${s.t}`].filter(Boolean),x:W.v/s.v,unit:'N',ins:[W,s]}}},
- {tags:['G','Gh'],f:()=>{const m=rnd(5,200,'kg'),G=m.v*10,W=wIn(G*(2+rand()*23));
-   return {text:`Nosturi nostaa ${B(m)} kuorman ja tekee siinä ${B(W)} työtä. Kuinka korkealle kuorma nostetaan?`,
-   steps:[W.conv,`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('W')} = ${V('G')}${V('h')}  ⟹  ${V('h')} = ${V('W')} / ${V('G')}`,`${V('h')} = ${W.J} / ${raw(G)} N`].filter(Boolean),x:W.v/G,unit:'m',ins:[W,m]}}},
- {tags:['Gh'],f:()=>{const G=rnd(30,900,'N'),W=wIn(G.v*(1+rand()*14));
-   return {text:`${pick(['Laatikko','Ämpäri','Kattotiilipino'])}, jonka paino on ${B(G)}, nostetaan ylös. Nostotyö on ${B(W)}. Kuinka korkealle se nostetaan?`,
-   steps:[W.conv,`${V('W')} = ${V('G')}${V('h')}  ⟹  ${V('h')} = ${V('W')} / ${V('G')}`,`${V('h')} = ${W.J} / ${G.t}`].filter(Boolean),x:W.v/G.v,unit:'m',ins:[W,G]}}},
- {tags:['G','Gh'],f:()=>{const h=rnd(0.8,5,'m'),W=wIn(h.v*10*(2+rand()*58)),n=name(),G=W.v/h.v;
-   return {text:`${n} nostaa ${pick(['laatikon','repun','kukkaruukun','matkalaukun'])} ${B(h)} korkeuteen ja tekee ${B(W)} työtä. Mikä on nostetun esineen massa?`,
-   steps:[W.conv,`${V('W')} = ${V('G')}${V('h')}  ⟹  ${V('G')} = ${V('W')} / ${V('h')}`,`${V('G')} = ${W.J} / ${h.t} = ${raw(G)} N`,`${V('G')} = ${V('m')} · 10 N/kg  ⟹  ${V('m')} = ${V('G')} / (10 N/kg)`,`${V('m')} = ${raw(G)} N / (10 N/kg)`].filter(Boolean),x:G/10,unit:'kg',ins:[W,h]}}},
- {tags:['G'],f:()=>{const G=rnd(5,950,'N');
-   return {text:`${pick(['Matkalaukun','Koiran','Sohvan','Mopon'])} paino on ${B(G)}. Mikä on sen massa?`,
-   steps:[`${V('G')} = ${V('m')} · 10 N/kg  ⟹  ${V('m')} = ${V('G')} / (10 N/kg)`,`${V('m')} = ${G.t} / (10 N/kg)`],x:G.v/10,unit:'kg',ins:[G]}}},
- {tags:['ramp','G'],f:()=>{const {s,h,m,G}=rampVals();
-   return {text:`${B(m)} laatikko työnnetään ${B(s)} pitkää luiskaa pitkin ${B(h)} korkealle lavalle. Kuinka suurella voimalla laatikkoa pitää työntää? (Kitkaa ei huomioida.)`,
-   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('F')}${V('s')} = ${V('G')}${V('h')}  ⟹  ${V('F')} = ${V('G')}${V('h')} / ${V('s')}`,`${V('F')} = ${raw(G)} N · ${h.t} / ${s.t}`],x:G*h.v/s.v,unit:'N',ins:[m,s,h]}}},
- {tags:['ramp','G'],f:()=>{const {s,h,m,G}=rampVals();const F=inp(G*h.v/s.v,sfp(),'N');
-   return {text:`Muuttomies jaksaa työntää korkeintaan ${B(F)} voimalla. Hänen pitää saada ${B(m)} pakastin ${B(h)} korkeaan kuorma-autoon luiskaa pitkin. Kuinka pitkä luiskan pitää olla? (Kitkaa ei huomioida.)`,
-   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('F')}${V('s')} = ${V('G')}${V('h')}  ⟹  ${V('s')} = ${V('G')}${V('h')} / ${V('F')}`,`${V('s')} = ${raw(G)} N · ${h.t} / ${F.t}`],x:G*h.v/F.v,unit:'m',ins:[F,m,h]}}},
- {tags:['ramp','G'],f:()=>{const {s,h,m,G}=rampVals();const F=inp(G*h.v/s.v,sfp(),'N'),n=name();
-   return {text:`${n} työntää ${B(m)} mopon ${B(s)} pitkää ramppia ylös voimalla ${B(F)}. Kuinka korkealla rampin yläpää on? (Kitkaa ei huomioida.)`,
-   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`${V('F')}${V('s')} = ${V('G')}${V('h')}  ⟹  ${V('h')} = ${V('F')}${V('s')} / ${V('G')}`,`${V('h')} = ${F.t} · ${s.t} / ${raw(G)} N`],x:F.v*s.v/G,unit:'m',ins:[F,s,m]}}},
- {tags:['ramp'],f:()=>{const {s,h}=rampVals();const G=rnd(80,900,'N');
-   return {text:`Tynnyri, jonka paino on ${B(G)}, vieritetään ${B(s)} pitkää lankkua pitkin ${B(h)} korkealle. Kuinka suuri voima tarvitaan? (Kitkaa ei huomioida.)`,
-   steps:[`${V('F')}${V('s')} = ${V('G')}${V('h')}  ⟹  ${V('F')} = ${V('G')}${V('h')} / ${V('s')}`,`${V('F')} = ${G.t} · ${h.t} / ${s.t}`],x:G.v*h.v/s.v,unit:'N',ins:[G,s,h]}}},
- {tags:['P'],f:()=>{const P=rnd(100,2500,'W'),W=wIn(P.v*(3+rand()*120));
-   return {text:`${pick(['Sähköpora','Vesipumppu','Pölynimuri','Moottori'])}, jonka teho on ${B(P)}, tekee ${B(W)} työtä. Kuinka kauan se on käynnissä?`,
-   steps:[W.conv,`${V('P')} = ${V('W')} / ${V('t')}  ⟹  ${V('t')} = ${V('W')} / ${V('P')}`,`${V('t')} = ${W.J} / ${P.t}`].filter(Boolean),x:W.v/P.v,unit:'s',ins:[W,P]}}},
- {tags:['P'],f:()=>{const P=rnd(50,2000,'W'),t=rnd(3,90,'s');
-   return {text:`${pick(['Kuntopyöräilijä','Vinssi','Sähkömoottori','Soutaja'])} toimii teholla ${B(P)} ajan ${B(t)}. Kuinka paljon työtä tehdään?`,
-   steps:[`${V('P')} = ${V('W')} / ${V('t')}  ⟹  ${V('W')} = ${V('P')}${V('t')}`,`${V('W')} = ${P.t} · ${t.t}`],x:P.v*t.v,unit:'J',ins:[P,t]}}},
- {tags:['P','G','Gh'],f:()=>{const P=rnd(2000,9000,'W'),m=rnd(200,950,'kg'),h=rnd(3,30,'m'),G=m.v*10,W=G*h.v;
-   return {text:`Hissin moottorin teho on ${B(P)}. Kuinka kauan kestää nostaa ${B(m)} kuorma ${B(h)} korkeudelle?`,
-   steps:[`Paino: ${V('G')} = ${m.t} · 10 N/kg = ${raw(G)} N`,`Työ: ${V('W')} = ${V('G')}${V('h')} = ${raw(G)} N · ${h.t} = ${raw(W)} J`,`${V('P')} = ${V('W')} / ${V('t')}  ⟹  ${V('t')} = ${V('W')} / ${V('P')}`,`${V('t')} = ${raw(W)} J / ${P.t}`],x:W/P.v,unit:'s',ins:[P,m,h]}}},
- {tags:['P','Fs'],f:()=>{const P=rnd(80,400,'W'),t=rnd(10,120,'s'),s=rnd(50,900,'m'),W=P.v*t.v;
-   return {text:`Pyöräilijä polkee teholla ${B(P)} ajan ${B(t)} ja kulkee sinä aikana ${B(s)}. Kuinka suurella voimalla pyörää viedään eteenpäin?`,
-   steps:[`${V('P')} = ${V('W')} / ${V('t')}  ⟹  ${V('W')} = ${V('P')}${V('t')} = ${P.t} · ${t.t} = ${raw(W)} J`,`${V('W')} = ${V('F')}${V('s')}  ⟹  ${V('F')} = ${V('W')} / ${V('s')}`,`${V('F')} = ${raw(W)} J / ${s.t}`],x:W/s.v,unit:'N',ins:[P,t,s]}}},
+ {tags:['Fs'],f:()=>{const sc=pick(PUSH),F=R(sc.F,'N'),W=wIn(F.v*U(sc.s));
+   return {text:`${who(sc)} ${sc.verb} voimalla ${B(F)} ja tekee ${B(W)} työtä. ${sc.sq}`,
+   steps:blk('W',FS,[GV('W',wg(W)),GV('F',F.t),Q('s')],pS(W.J,['F',F.t],['s',null])),x:W.v/F.v,unit:'m',ins:[W,F]}}},
+ {tags:['Fs'],f:()=>{const sc=pick(PUSH),s=R(sc.s,'m'),W=wIn(s.v*U(sc.F));
+   return {text:`${who(sc)} ${sc.verb} matkan ${B(s)} ja tekee ${B(W)} työtä. ${sc.fq}`,
+   steps:blk('W',FS,[GV('W',wg(W)),GV('s',s.t),Q('F')],pS(W.J,['F',null],['s',s.t])),x:W.v/s.v,unit:'N',ins:[W,s]}}},
+ {tags:['G','Gh'],f:()=>{const sc=pick(LIFT),m=R(sc.m,'kg'),G=m.v*10,W=wIn(G*U(sc.h));
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${sc.toU} ja tekee siinä ${B(W)} työtä. ${sc.askH}`,
+   steps:blk('W',GH,[GV('W',wg(W)),GM(m),Q('h')],pS(W.J,['G',val(G,'N')],['h',null])),x:W.v/G,unit:'m',ins:[W,m]}}},
+ {tags:['Gh'],f:()=>{const sc=pick(LIFT),G=inp(U(sc.m)*10,sfp(),'N'),W=wIn(G.v*U(sc.h));
+   return {text:`${who(sc)} ${sc.verb} ${sc.obj}, jonka paino on ${B(G)}, ${sc.toU} ja tekee siinä ${B(W)} työtä. ${sc.askH}`,
+   steps:blk('W',GH,[GV('W',wg(W)),GV('G',G.t),Q('h')],pS(W.J,['G',G.t],['h',null])),x:W.v/G.v,unit:'m',ins:[W,G]}}},
+ {tags:['G','Gh'],f:()=>{const sc=pick(LIFT),h=R(sc.h,'m'),W=wIn(h.v*10*U(sc.m)),G=W.v/h.v;
+   return {text:`${who(sc)} ${sc.verb} ${sc.obj} ${sc.to(B(h))} ja tekee siinä ${B(W)} työtä. Mikä on ${sc.obj.split(' ')[0]} massa?`,
+   steps:['Lasketaan ensin paino.',...blk('W',GH,[GV('W',wg(W)),GV('h',h.t),Q('G')],fin(pS(W.J,['G',null],['h',h.t]),G,'N')),
+     'Sitten massa.',...mBlk(val(G,'N'))],x:G/10,unit:'kg',ins:[W,h]}}},
+ {tags:['G'],f:()=>{const [o,lo,hi]=pick(MASS),G=inp((lo+rand()*(hi-lo))*10,sfp(),'N');
+   return {text:`${o} paino on ${B(G)}. Mikä on sen massa?`,
+   steps:mBlk(G.t),x:G.v/10,unit:'kg',ins:[G]}}},
+ {tags:['ramp','G'],f:()=>{const sc=pick(RAMP),{h,s}=rampDraw(sc),F=inp(U(sc.m)*10*h.v/s.v,sfp(),'N'),G=F.v*s.v/h.v;
+   return {text:`${who(sc)} ${sc.verb} ${sc.obj} ${B(s)} pitkää ${sc.rp} pitkin ${sc.to(B(h))} voimalla ${B(F)}. Mikä on ${sc.obj} massa?${NF}`,
+   steps:['Lasketaan ensin paino.',...blkR([GV('F',F.t),GV('s',s.t),GV('h',h.t),Q('G')],fin(rS(F.t,s.t,null,h.t),G,'N')),
+     'Sitten massa.',...mBlk(val(G,'N'))],x:G/10,unit:'kg',ins:[F,s,h]}}},
+ {tags:['ramp','G'],f:()=>{const sc=pick(RAMP),{h,s}=rampDraw(sc),m=R(sc.m,'kg'),G=m.v*10,F=inp(G*h.v/s.v,sfp(),'N');
+   return {text:`${sc.nom}, jonka massa on ${B(m)}, pitää saada ${sc.rp} pitkin ${sc.to(B(h))}. ${who(sc)} ${sc.can} korkeintaan ${B(F)} voimalla. Kuinka pitkä ${sc.rn} tarvitaan?${NF}`,
+   steps:blkR([GV('F',F.t),GM(m),GV('h',h.t),Q('s')],rS(F.t,null,val(G,'N'),h.t)),x:G*h.v/F.v,unit:'m',ins:[F,m,h]}}},
+ {tags:['ramp','G'],f:()=>{const sc=pick(RAMP),{h,s}=rampDraw(sc),m=R(sc.m,'kg'),G=m.v*10,F=inp(G*h.v/s.v,sfp(),'N');
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${B(s)} pitkää ${sc.rp} pitkin ${sc.toU} voimalla ${B(F)}. ${sc.askH}${NF}`,
+   steps:blkR([GV('F',F.t),GV('s',s.t),GM(m),Q('h')],rS(F.t,s.t,val(G,'N'),null)),x:F.v*s.v/G,unit:'m',ins:[F,s,m]}}},
+ {tags:['P'],f:()=>{const sc=pick(POW),P=R(sc.P,'W'),W=wIn(P.v*U(sc.t));
+   return {text:`${sc.subj} ${sc.verb} teholla ${B(P)} ja tekee ${B(W)} työtä. Kuinka kauan siihen kuluu?`,
+   steps:blk('P',PWT,[GV('P',P.t),GV('W',wg(W)),Q('t')],qS(P.t,W.J,null)),x:W.v/P.v,unit:'s',ins:[W,P]}}},
+ {tags:['P'],f:()=>{const sc=pick(POW),P=R(sc.P,'W'),t=R(sc.t,'s');
+   return {text:`${sc.subj} ${sc.verb} teholla ${B(P)} ajan ${B(t)}. Kuinka paljon työtä tehdään?`,
+   steps:blk('P',PWT,[GV('P',P.t),GV('t',t.t),Q('W')],qS(P.t,null,t.t)),x:P.v*t.v,unit:'J',ins:[P,t]}}},
+ {tags:['P','G','Gh'],f:()=>{const sc=pick(LIFT.filter(l=>l.motor)),m=R(sc.m,'kg'),h=R(sc.h,'m'),G=m.v*10,W=G*h.v,P=inp(W/U(sc.t),sfp(),'W');
+   return {text:`${sc.motor} teho on ${B(P)}. Kuinka kauan kestää nostaa ${B(m)} ${sc.nom} ${sc.to(B(h))}?`,
+   steps:['Lasketaan ensin nostotyö.',...blk('W',GH,[GM(m),GV('h',h.t)],fin(subD('W',`${val(G,'N')} · ${h.t}`),W,'J')),
+     'Sitten aika.',...blk('P',PWT,[GV('P',P.t),GV('W',val(W,'J')),Q('t')],qS(P.t,val(W,'J'),null))],x:W/P.v,unit:'s',ins:[P,m,h]}}},
+ {tags:['P','Fs'],f:()=>{const sc=pick(PUSH),s=R(sc.s,'m'),t=R(sc.t,'s'),P=inp(U(sc.F)*s.v/t.v,sfp(),'W'),W=P.v*t.v;
+   return {text:`${who(sc)} ${sc.verb} matkan ${B(s)} ajassa ${B(t)}. Teho on ${B(P)}. ${sc.fq}`,
+   steps:['Lasketaan ensin työ.',...blk('P',PWT,[GV('P',P.t),GV('t',t.t),Q('W')],fin(qS(P.t,null,t.t),W,'J')),
+     'Sitten voima.',...blk('W',FS,[GV('W',val(W,'J')),GV('s',s.t),Q('F')],pS(val(W,'J'),['F',null],['s',s.t]))],x:W/s.v,unit:'N',ins:[P,t,s]}}},
 ];
+
+/* Haastavat: vaativat oivallusta (yksikönmuunnos, kerrosten laskeminen, ylimääräinen tieto, useampi kappale) */
+const EXACT='Kappale- ja kerrosmäärät ovat tarkkoja lukuja, joten ne eivät vaikuta tarkkuuteen.';
+const ri=(a,b)=>a+Math.floor(rand()*(b-a+1));
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+const GN=(mk,G)=>`${V('G')} = ${raw(mk)} · 10 N = ${val(G,'N')}`;
+const CHAL=[
+ {tags:['G'],f:()=>{const [o,lo,hi]=pick([['Kännykän',140,230],['Omenan',100,300],['Jalkapallon',410,450],['Kananmunan',50,70],['Suklaalevyn',100,200],['Kynän',8,20]]),g=rnd(lo,hi,'g'),mk=g.v/1000;
+   return {text:`${o} massa on ${B(g)}. Mikä on sen paino?`,
+   steps:blk('G',MG,[GV('m',`${g.t} = ${val(mk,'kg')}`),Q('G')],subD('G',`${raw(mk)} · 10 N`)),x:g.v/100,unit:'N',ins:[g]}}},
+ {tags:['Fs'],f:()=>{const s=rnd(0.4,3,'km'),W=inp(s.v*1000*(30+rand()*70)/1000,sfp(),'kJ'),n=name(),Wj=val(W.v*1000,'J'),sm=val(s.v*1000,'m');
+   return {text:`${n} vetää pulkkaa hiihtoretkellä ${B(s)} matkan ja tekee ${B(W)} työtä. Kuinka suurella voimalla ${n} vetää pulkkaa?`,
+   steps:blk('W',FS,[GV('W',`${W.t} = ${Wj}`),GV('s',`${s.t} = ${sm}`),Q('F')],pS(Wj,['F',null],['s',sm])),x:W.v/s.v,unit:'N',ins:[W,s]}}},
+ {tags:['G','Gh'],f:()=>{const m=rnd(4,18,'kg'),h=rnd(0.8,1.3,'m'),s=rnd(10,60,'m'),G=m.v*10;
+   return {text:`Muuttomies nostaa ${B(m)} laatikon lattialta ${B(h)} korkeudelle syliinsä ja kantaa sen sitten ${B(s)} matkan vaakasuoraa käytävää pitkin. Kuinka paljon nostotyötä hän tekee koko matkan aikana?`,
+   steps:[`Vaakasuorassa kantamisessa laatikko ei nouse ylemmäs, joten siinä ei tehdä nostotyötä. Matka ${s.t} on ylimääräinen tieto.`,...blk('W',GH,[GM(m),GV('h',h.t),Q('W')],subD('W',`${val(G,'N')} · ${h.t}`))],x:G*h.v,unit:'J',ins:[m,h]}}},
+ {tags:['G','Gh'],f:()=>{const k=ri(8,40),m=rnd(5,20,'kg'),h=rnd(0.8,1.8,'m'),G=m.v*10,W1=G*h.v;
+   return {text:`Varastotyöntekijä nostaa ${k} laatikkoa lattialta ${B(h)} korkealle hyllylle. Jokaisen laatikon massa on ${B(m)}. Kuinka paljon työtä hän tekee yhteensä?`,
+   steps:['Lasketaan ensin yhden laatikon nostotyö.',...blk('W',GH,[GM(m),GV('h',h.t)],fin(subD('W',`${val(G,'N')} · ${h.t}`),W1,'J')),
+     `Laatikoita on ${k}, joten kerrotaan yhden laatikon työ niiden määrällä.`,E(`${V('W')} = ${k} · ${val(W1,'J')}`,null,'Kaikki laatikot')],x:k*W1,unit:'J',ins:[m,h],note:EXACT}}},
+ {tags:['ramp','G'],f:()=>{const sc=pick(RAMP),{h,s}=rampDraw(sc),m=R(sc.m,'kg'),G=m.v*10,F=G*h.v/s.v;
+   return {text:`${sc.nom}, jonka massa on ${B(m)}, pitää saada ${sc.to(B(h))}. Kuinka paljon pienemmällä voimalla siitä selviää, jos käyttää ${B(s)} pitkää ${sc.rp} kuin jos nostaisi suoraan ylös?${NF}`,
+   steps:[`Suoraan nostettaessa tarvitaan voima, joka on yhtä suuri kuin paino: ${GM(m)}.`,`${cap(sc.rn)}a pitkin tarvittava voima:`,
+     ...blkR([GM(m),GV('s',s.t),GV('h',h.t),Q('F')],fin(rS(null,s.t,val(G,'N'),h.t),F,'N')),
+     'Lasketaan voimien erotus.',E(`${val(G,'N')} − ${val(F,'N')}`,null,'Erotus')],x:G-F,unit:'N',ins:[m,h,s]}}},
+ {tags:['ramp','G','P'],f:()=>{const sc=pick(RAMP),{h,s}=rampDraw(sc),m=R(sc.m,'kg'),t=rnd(3,20,'s'),G=m.v*10,W=G*h.v;
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${B(s)} pitkää ${sc.rp} pitkin ${sc.to(B(h))}. Siihen kuluu aikaa ${B(t)}. Kuinka suuri on teho?${NF}`,
+   steps:[`Kaltevalla tasolla ${FS} = ${GH}, joten työ on sama kuin nostotyö. ${cap(sc.rn)}n pituutta ei tarvita.`,
+     ...blk('W',GH,[GM(m),GV('h',h.t)],fin(subD('W',`${val(G,'N')} · ${h.t}`),W,'J')),
+     'Sitten teho.',...blk('P',PWT,[GV('W',val(W,'J')),GV('t',t.t),Q('P')],subD('P',fr(val(W,'J'),t.t)))],x:W/t.v,unit:'W',ins:[m,h,t]}}},
+ {tags:['G','Gh','P'],f:()=>{const m=rnd(40,80,'kg'),fh=rnd(2.8,3.5,'m'),a=ri(1,3),b=a+ri(2,5),t=rnd(8,40,'s'),d=b-a,h=d*fh.v,G=m.v*10,W=G*h;
+   return {text:`Oppilas, jonka massa on ${B(m)}, juoksee portaita ${a}. kerroksesta ${b}. kerrokseen. Yhden kerroksen korkeus on ${B(fh)}. Matkaan kuluu ${B(t)}. Mikä on oppilaan teho?`,
+   steps:[`Kerrosvälejä on ${b} − ${a} = ${d}. Lasketaan ensin nostotyö.`,
+     ...blk('W',GH,[GM(m),GV('h',`${d} · ${fh.t} = ${val(h,'m')}`)],fin(subD('W',`${val(G,'N')} · ${val(h,'m')}`),W,'J')),
+     'Sitten teho.',...blk('P',PWT,[GV('W',val(W,'J')),GV('t',t.t),Q('P')],subD('P',fr(val(W,'J'),t.t)))],x:W/t.v,unit:'W',ins:[m,fh,t],note:EXACT}}},
+ {tags:['G','Gh','P'],f:()=>{const k=ri(15,60),c=rnd(15,19,'cm',2),m=rnd(40,80,'kg'),t=rnd(6,30,'s'),h=k*c.v/100,G=m.v*10,W=G*h;
+   return {text:`Näkötornin portaissa on ${k} askelmaa, ja jokaisen askelman korkeus on ${B(c)}. Retkeilijä, jonka massa on ${B(m)}, nousee portaat ajassa ${B(t)}. Mikä on hänen tehonsa?`,
+   steps:['Lasketaan ensin nostotyö. Nousukorkeus saadaan askelmien määrästä.',
+     ...blk('W',GH,[GM(m),GV('h',`${k} · ${c.t} = ${raw(k*c.v)} cm = ${val(h,'m')}`)],fin(subD('W',`${val(G,'N')} · ${val(h,'m')}`),W,'J')),
+     'Sitten teho.',...blk('P',PWT,[GV('W',val(W,'J')),GV('t',t.t),Q('P')],subD('P',fr(val(W,'J'),t.t)))],x:W/t.v,unit:'W',ins:[c,m,t],note:EXACT}}},
+ {tags:['G','Gh','P'],f:()=>{const k=ri(8,30),m=rnd(5,20,'kg'),h=rnd(0.8,1.8,'m'),G=m.v*10,W1=G*h.v,W=k*W1,mi=inp(W/(25+rand()*50)/60,sfp(),'min'),ts=mi.v*60;
+   return {text:`Varastotyöntekijä nostaa ${k} laatikkoa ${B(h)} korkealle hyllylle. Jokaisen laatikon massa on ${B(m)}, ja työhön kuluu ${B(mi)}. Mikä on hänen keskimääräinen tehonsa?`,
+   steps:['Lasketaan ensin yhden laatikon nostotyö.',...blk('W',GH,[GM(m),GV('h',h.t)],fin(subD('W',`${val(G,'N')} · ${h.t}`),W1,'J')),
+     E(`${V('W')} = ${k} · ${val(W1,'J')} = ${val(W,'J')}`,null,'Kaikki laatikot'),
+     'Sitten teho.',...blk('P',PWT,[GV('W',val(W,'J')),GV('t',`${mi.t} = ${val(ts,'s')}`),Q('P')],subD('P',fr(val(W,'J'),val(ts,'s'))))],x:W/ts,unit:'W',ins:[m,h,mi],note:EXACT}}},
+ {tags:['G','Gh','P'],f:()=>{const L=rnd(200,2000,'l'),h=rnd(3,15,'m'),P=rnd(0.3,1.5,'kW'),G=L.v*10,W=G*h.v,Pw=P.v*1000,ts=W/Pw;
+   return {text:`Pumppu nostaa ${B(L)} vettä kaivosta ${B(h)} korkeudelle. Pumpun teho on ${B(P)}. Kuinka monta minuuttia pumppaamiseen kuluu?`,
+   steps:[`Yksi litra vettä on massaltaan 1 kg, joten veden massa on ${val(L.v,'kg')}. Lasketaan ensin nostotyö.`,
+     ...blk('W',GH,[GN(L.v,G),GV('h',h.t)],fin(subD('W',`${val(G,'N')} · ${h.t}`),W,'J')),
+     'Sitten aika.',...blk('P',PWT,[GV('P',`${P.t} = ${val(Pw,'W')}`),GV('W',val(W,'J')),Q('t')],fin(qS(val(Pw,'W'),val(W,'J'),null),ts,'s')),
+     E(`${V('t')} = ${fr(raw(ts),'60')} min`,null,'Minuuteiksi')],x:ts/60,unit:'min',ins:[L,h,P]}}},
+ {tags:['G','Gh','P'],f:()=>{const cab=rnd(300,600,'kg'),k=ri(3,8),pm=rnd(65,80,'kg'),b=ri(4,9),fh=rnd(2.8,3.4,'m'),P=rnd(5,15,'kW'),M=cab.v+k*pm.v,h=(b-1)*fh.v,G=M*10,W=G*h,Pw=P.v*1000;
+   return {text:`Hissikorin massa on ${B(cab)}. Hissiin nousee ${k} henkilöä, joiden keskimääräinen massa on ${B(pm)}. Hissi nousee 1. kerroksesta ${b}. kerrokseen, ja kerroksen korkeus on ${B(fh)}. Moottorin teho on ${B(P)}. Kuinka kauan nousu kestää?`,
+   steps:[E(`${V('m')} = ${cab.t} + ${k} · ${pm.t} = ${val(M,'kg')}`,null,'Kokonaismassa'),'Lasketaan ensin nostotyö.',
+     ...blk('W',GH,[GN(M,G),GV('h',`(${b} − 1) · ${fh.t} = ${val(h,'m')}`)],fin(subD('W',`${val(G,'N')} · ${val(h,'m')}`),W,'J')),
+     'Sitten aika.',...blk('P',PWT,[GV('P',`${P.t} = ${val(Pw,'W')}`),GV('W',val(W,'J')),Q('t')],qS(val(Pw,'W'),val(W,'J'),null))],x:W/Pw,unit:'s',ins:[cab,pm,fh,P],note:EXACT}}},
+ {tags:['G','Gh','P'],f:()=>{const m=rnd(0.5,3,'t'),hh=10+rand()*40,mi=rnd(0.5,3,'min'),P=inp(m.v*1000*10*hh/(mi.v*60)/1000,sfp(),'kW'),Pw=P.v*1000,ts=mi.v*60,W=Pw*ts,mk=m.v*1000,G=mk*10;
+   return {text:`Rakennusnosturin moottorin teho on ${B(P)}. Nosturi nostaa ${B(m)} betonielementin ajassa ${B(mi)}. Kuinka korkealle elementti nousee?`,
+   steps:['Lasketaan ensin työ tehon avulla.',...blk('P',PWT,[GV('P',`${P.t} = ${val(Pw,'W')}`),GV('t',`${mi.t} = ${val(ts,'s')}`),Q('W')],fin(qS(val(Pw,'W'),null,val(ts,'s')),W,'J')),
+     `Sitten korkeus. Massa on ${m.t} = ${val(mk,'kg')}.`,...blk('W',GH,[GV('W',val(W,'J')),GN(mk,G),Q('h')],pS(val(W,'J'),['G',val(G,'N')],['h',null]))],x:W/G,unit:'m',ins:[P,m,mi]}}},
+ {tags:['G','Gh','P'],f:()=>{const m=rnd(45,80,'kg'),bk=rnd(8,15,'kg'),h=rnd(20,120,'m'),mi=rnd(2,10,'min'),M=m.v+bk.v,G=M*10,W=G*h.v,ts=mi.v*60,n=name();
+   return {text:`${n} (${B(m)}) ajaa ${B(bk)} polkupyörällä mäen päälle. Mäki nousee ${B(h)}, ja nousuun kuluu ${B(mi)}. Kuinka suurella teholla ${n} polkee? (Kitkaa ja ilmanvastusta ei huomioida.)`,
+   steps:['Ylös nousevat sekä pyöräilijä että pyörä.',E(`${V('m')} = ${m.t} + ${bk.t} = ${val(M,'kg')}`,null,'Kokonaismassa'),'Lasketaan ensin nostotyö.',
+     ...blk('W',GH,[GN(M,G),GV('h',h.t)],fin(subD('W',`${val(G,'N')} · ${h.t}`),W,'J')),
+     'Sitten teho.',...blk('P',PWT,[GV('W',val(W,'J')),GV('t',`${mi.t} = ${val(ts,'s')}`),Q('P')],subD('P',fr(val(W,'J'),val(ts,'s'))))],x:W/ts,unit:'W',ins:[m,bk,h,mi]}}},
+ {tags:['P'],f:()=>{const sc=pick([['Pölynimuri',0.7,2],['Hiustenkuivaaja',1,2.2],['Sähkökiuas',4,9],['Sähköpora',0.4,1]]),P=rnd(sc[1],sc[2],'kW'),mi=rnd(2,30,'min'),Pw=P.v*1000,ts=mi.v*60,W=Pw*ts;
+   return {text:`${sc[0]}, jonka teho on ${B(P)}, on käynnissä ${B(mi)}. Kuinka monta kilojoulea työtä se tekee?`,
+   steps:blk('P',PWT,[GV('P',`${P.t} = ${val(Pw,'W')}`),GV('t',`${mi.t} = ${val(ts,'s')}`),Q('W')],[...fin(qS(val(Pw,'W'),null,val(ts,'s')),W,'J'),E(`${V('W')} = ${fr(raw(W),'1000')} kJ`,null,'Kilojouleiksi')]),x:W/1000,unit:'kJ',ins:[P,mi]}}},
+];
+
+/* ---------- Kaksivartinen vipu: Ga = Fb ----------
+   a = kuorman varsi, b = voiman varsi */
+const LEVER=[
+ {subj:'Rakennusmies',verb:'nostaa',obj:'kiven',nom:'Kivi',tool:'rautakangella',tp:'kankea',m:[80,300],a:[0.15,0.4],b:[1,1.8]},
+ {verb:'nostaa',obj:'pihalaatan',nom:'Pihalaatta',tool:'sorkkaraudalla',tp:'sorkkarautaa',m:[25,70],a:[0.05,0.15],b:[0.5,0.9]},
+ {subj:'Metsuri',verb:'kääntää',obj:'tukin',nom:'Tukki',tool:'kääntökangella',tp:'kankea',m:[150,400],a:[0.2,0.5],b:[1.2,2.2]},
+ {subj:'Isä',verb:'nostaa',obj:'lapsen',nom:'Lapsi',tool:'keinulaudalla',tp:'keinulaudan toista päätä',m:[15,35],a:[0.8,1.4],b:[1.6,2.4]},
+ {subj:'Puutarhuri',verb:'nostaa',obj:'kannon',nom:'Kanto',tool:'rautakangella',tp:'kankea',m:[40,150],a:[0.15,0.35],b:[1,1.6]},
+];
+const blkL=(giv,rest)=>[E(`${V('G')}${V('a')} = ${V('F')}${V('b')}`,null,null,1),{given:ord(giv,['G','a','F','b'])},...rest];
+/* x1·x2 = y1·y2, yksi tuntematon (null) */
+function pp(sy,v){
+  const t=sy.map((s,i)=>v[i]??V(s)),u=v.indexOf(null),p=u^1;
+  const other=u<2?`${v[2]} · ${v[3]}`:`${v[0]} · ${v[1]}`;
+  return [E(`${t[0]} · ${t[1]} = ${t[2]} · ${t[3]}`,`: ${v[p]}`),E(`${V(sy[u])} = ${fr(other,v[p])}`)];
+}
+const lS=(G,a,F,b)=>pp(['G','a','F','b'],[G,a,F,b]);
+const LV=()=>{const sc=pick(LEVER);return {sc,a:R(sc.a,'m'),b:R(sc.b,'m')};};
+const NFL=' (Vivun omaa painoa ei huomioida.)';
+
+EASY.push(
+ {tags:['lever'],f:()=>{const {sc,a,b}=LV(),G=inp(U(sc.m)*10,sfp(),'N');
+   return {text:`${who(sc)} ${sc.verb} ${sc.obj}, jonka paino on ${B(G)}, ${sc.tool}. Kuorman varsi on ${B(a)} ja voiman varsi ${B(b)}. Kuinka suurella voimalla ${sc.tp} pitää painaa?${NFL}`,
+   steps:blkL([GV('G',G.t),GV('a',a.t),Q('F'),GV('b',b.t)],lS(G.t,a.t,null,b.t)),x:G.v*a.v/b.v,unit:'N',ins:[G,a,b]}}},
+ {tags:['lever','G'],f:()=>{const {sc,a,b}=LV(),m=R(sc.m,'kg'),G=m.v*10;
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${sc.tool}. Kuorman varsi on ${B(a)} ja voiman varsi ${B(b)}. Kuinka suurella voimalla ${sc.tp} pitää painaa?${NFL}`,
+   steps:blkL([GM(m),GV('a',a.t),Q('F'),GV('b',b.t)],lS(val(G,'N'),a.t,null,b.t)),x:G*a.v/b.v,unit:'N',ins:[m,a,b]}}},
+);
+HARD.push(
+ {tags:['lever','G'],f:()=>{const {sc,a,b}=LV(),m=R(sc.m,'kg'),G=m.v*10,F=inp(G*a.v/b.v,sfp(),'N');
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${sc.tool}. Hän jaksaa painaa ${sc.tp} voimalla ${B(F)}. Kuorman varsi on ${B(a)}. Kuinka pitkä voiman varren pitää olla?${NFL}`,
+   steps:blkL([GM(m),GV('a',a.t),GV('F',F.t),Q('b')],lS(val(G,'N'),a.t,F.t,null)),x:G*a.v/F.v,unit:'m',ins:[m,a,F]}}},
+ {tags:['lever','G'],f:()=>{const {sc,a,b}=LV(),m=R(sc.m,'kg'),G=m.v*10,F=inp(G*a.v/b.v,sfp(),'N');
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${sc.tool} painamalla voimalla ${B(F)}. Voiman varsi on ${B(b)}. Kuinka pitkä on kuorman varsi?${NFL}`,
+   steps:blkL([GM(m),Q('a'),GV('F',F.t),GV('b',b.t)],lS(val(G,'N'),null,F.t,b.t)),x:F.v*b.v/G,unit:'m',ins:[m,F,b]}}},
+ {tags:['lever'],f:()=>{const {sc,a,b}=LV(),G=inp(U(sc.m)*10,sfp(),'N'),F=inp(G.v*a.v/b.v,sfp(),'N');
+   return {text:`${sc.nom}, jonka paino on ${B(G)}, nostetaan ${sc.tool}. Voiman varsi on ${B(b)}, ja ${sc.tp} painetaan voimalla ${B(F)}. Kuinka pitkä on kuorman varsi?${NFL}`,
+   steps:blkL([GV('G',G.t),Q('a'),GV('F',F.t),GV('b',b.t)],lS(G.t,null,F.t,b.t)),x:F.v*b.v/G.v,unit:'m',ins:[G,F,b]}}},
+ {tags:['lever','G'],f:()=>{const {sc,a,b}=LV(),F=inp(U(sc.m)*10*a.v/b.v,sfp(),'N'),G=F.v*b.v/a.v;
+   return {text:`${who(sc)} ${sc.verb} ${sc.obj} ${sc.tool} painamalla voimalla ${B(F)}. Kuorman varsi on ${B(a)} ja voiman varsi ${B(b)}. Mikä on ${sc.obj.split(' ')[0]} massa?${NFL}`,
+   steps:['Lasketaan ensin paino.',...blkL([Q('G'),GV('a',a.t),GV('F',F.t),GV('b',b.t)],fin(lS(null,a.t,F.t,b.t),G,'N')),
+     'Sitten massa.',...mBlk(val(G,'N'))],x:G/10,unit:'kg',ins:[F,a,b]}}},
+);
+CHAL.push(
+ {tags:['lever','G'],f:()=>{const {sc,a}=LV(),L=rnd(sc.b[0]+sc.a[1]+0.1,sc.b[1]+sc.a[1],'m'),m=R(sc.m,'kg'),G=m.v*10,b=L.v-a.v;
+   return {text:`${who(sc)} ${sc.verb} ${B(m)} ${sc.obj} ${sc.tool}, jonka pituus on ${B(L)}. Tukipiste on ${B(a)} päässä siitä päästä, jonka alla kuorma on. Kuinka suurella voimalla ${sc.tp} pitää painaa toisesta päästä?${NFL}`,
+   steps:[`Voiman varsi on vivun pituus miinus kuorman varsi: ${V('b')} = ${L.t} − ${a.t} = ${val(b,'m')}.`,
+     ...blkL([GM(m),GV('a',a.t),Q('F'),GV('b',`${L.t} − ${a.t} = ${val(b,'m')}`)],lS(val(G,'N'),a.t,null,val(b,'m')))],x:G*a.v/b,unit:'N',ins:[m,L,a]}}},
+ {tags:['lever','G'],f:()=>{const {sc}=LV(),a=rnd(sc.a[0]*100,sc.a[1]*100,'cm'),b=R(sc.b,'m'),m=R(sc.m,'kg'),G=m.v*10,am=a.v/100,F=G*am/b.v;
+   return {text:`${sc.nom}, jonka massa on ${B(m)}, nostetaan ${sc.tool}. Kuorman varsi on ${B(a)} ja voiman varsi ${B(b)}. Kuinka paljon pienemmällä voimalla nosto onnistuu vivulla kuin ilman sitä?${NFL}`,
+   steps:[`Ilman vipua tarvitaan voima, joka on yhtä suuri kuin paino: ${GM(m)}. Muunna varret samaan yksikköön.`,
+     ...blkL([GM(m),GV('a',`${a.t} = ${val(am,'m')}`),Q('F'),GV('b',b.t)],fin(lS(val(G,'N'),val(am,'m'),null,b.t),F,'N')),
+     'Lasketaan voimien erotus.',E(`${val(G,'N')} − ${val(F,'N')}`,null,'Erotus')],x:G-F,unit:'N',ins:[m,a,b]}}},
+);
+
+/* Aiempien aiheiden kaavat kuuluvat myöhempiin: valittu aihe tuo mukaan tehtävät, joissa tarvitaan myös sen esitietoja */
+const PRE={G:[],Fs:[],Gh:['G'],ramp:['G'],lever:['G'],P:['G','Fs','Gh']};
+const allowed=g=>g.tags.every(t=>on[t]||g.tags.some(x=>on[x]&&PRE[x].includes(t)));
 
 /* ---------- vastaus ja pyöristys ---------- */
 function finish(t){
@@ -283,13 +538,13 @@ function finish(t){
   const res=fmtSig(t.x,n);const exact=raw(t.x);
   const amb=digits(res)<n;
   const last=t.steps.length-1;
-  t.steps[last]+=` = ${exact} ${t.unit}`+(exact!==res?` ≈ <b>${res} ${t.unit}</b>`:'');
+  t.steps[last].eq+=` = ${exact} ${t.unit}`+(exact!==res?` ≈ <b>${res} ${t.unit}</b>`:'');
   let alt='';const r=roundSig(t.x,n);
   if((t.unit==='J'||t.unit==='W')&&Math.abs(r)>=1000) alt=`= ${fmtSig(r/1000,n)} k${t.unit}`;
   if(amb) alt+=(alt?' ':'')+`(${n} merkitsevää numeroa)`;
   const nn=n===1?'yhteen merkitsevään numeroon':`${n} merkitsevään numeroon`;
   const round=(weak.length>1?`Epätarkimmat lähtöarvot (${weak.join(', ')}) ovat`:`Epätarkin lähtöarvo (${weak[0]}) on`)+` ${n===1?'yhden':n} merkitsevän numeron tarkkuudella, joten vastaus pyöristetään ${nn}.`;
-  return {res:`${res} ${t.unit}`,alt,round};
+  return {res:`${res} ${t.unit}`,alt,round:round+(t.note?' '+t.note:'')};
 }
 
 /* ---------- UI ---------- */
@@ -304,23 +559,24 @@ function updCount(){const k=FORMULAS.filter(f=>on[f.id]).length;
 [['t-kaavat','p-kaavat'],['t-suureet','p-suureet'],['t-pyor','p-pyor']].forEach(([b,p])=>{$(b).addEventListener('click',()=>{const open=$(p).hidden;$(p).hidden=!open;$(b).setAttribute('aria-expanded',open);});});
 
 function make(level){
-  const list=(level==='easy'?EASY:HARD).filter(g=>g.tags.every(t=>on[t]));
+  const list={easy:EASY,hard:HARD,chal:CHAL}[level].filter(allowed);
   $('answer').hidden=true;$('btn-answer').textContent='Näytä vastaus';
   if(!list.length){
     $('meta').hidden=true;$('btn-answer').hidden=true;$('task').className='task empty';
-    $('task').textContent=`Valituilla kaavoilla ei synny ${level==='easy'?'perustehtäviä':'vaikeita tehtäviä'}. Ota käyttöön lisää aiheita yläpuolelta.`;return;}
+    $('task').textContent=`Valituilla aiheilla ei synny ${{easy:'perustehtäviä',hard:'vaikeita tehtäviä',chal:'haastavia tehtäviä'}[level]}. Ota käyttöön lisää aiheita yläpuolelta.`;return;}
   let g;do{g=pick(list)}while(g===last&&list.length>1);last=g;
   const t=g.f();const a=finish(t);count++;
   $('meta').hidden=false;$('btn-answer').hidden=false;$('task').className='task';
-  $('badge').textContent=level==='easy'?'Perustehtävä':'Vaikea';$('badge').className='badge '+level;
+  $('badge').textContent={easy:'Perustehtävä',hard:'Vaikea',chal:'Haastava'}[level];$('badge').className='badge '+level;
   $('num').textContent='Tehtävä '+count;
   $('task').innerHTML=t.text;
   $('res').innerHTML=a.res+(a.alt?`<small>${a.alt}</small>`:'');
-  $('steps').innerHTML=t.steps.map(s=>`<li>${s}</li>`).join('');
+  $('steps').innerHTML=t.steps.map(s=>typeof s==='string'?`<p class="sn">${s}</p>`:s.given?`<div class="giv">${s.given.map(g=>`<div>${g}</div>`).join('')}</div>`:`<div class="er${s.form?' form':''}">${s.lab?`<span class="lab">${s.lab}:</span>`:''}<span class="eq">${s.eq}</span>${s.op?`<span class="op">${s.op}</span>`:''}</div>`).join('');
   $('round').textContent=a.round;
 }
 $('btn-easy').addEventListener('click',()=>make('easy'));
 $('btn-hard').addEventListener('click',()=>make('hard'));
+$('btn-chal').addEventListener('click',()=>make('chal'));
 $('btn-answer').addEventListener('click',()=>{const a=$('answer');a.hidden=!a.hidden;$('btn-answer').textContent=a.hidden?'Näytä vastaus':'Piilota vastaus'});
 make('easy');
 </script>
